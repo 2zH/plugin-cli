@@ -5,7 +5,8 @@ import Handlebars from 'handlebars'
 import fs from 'fs'
 
 const output = './README.md'
-console.log(process.cwd())
+console.log(`process.cwd(): ${process.cwd()}`)
+console.log(`__dirname: ${dirname}`)
 const entry = path.join(__dirname, '../template.md')
 const sucessMsg = 'Build success!'
 const failedMsg = 'Build failed!'
