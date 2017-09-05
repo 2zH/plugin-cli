@@ -1,6 +1,46 @@
-# docs
+# {{namespace}}
 
-## {{namespace}}
+## Introduction
+- Development: {{namespace}}.js
+- Production: {{namespace}}.min.js
+
+---
+## Installation
+
+### **NPM**
+
+Install the module:
+
+```javascript
+npm i @plugins/{{namespace}}
+```
+
+ES2015+
+
+```javascript
+import "{{namespace}}"
+```
+
+CommonJS
+
+```javascript
+require("{{namespace}}")
+```
+
+### **HTML import**
+
+```html
+<link rel="stylesheet" href="../plugins/{{namespace}}/css/{{namespace}}.css">
+<scripts src="../plugins/{{namespace}}.min.js"></scripts>
+```
+---
+## Usage
+
+```javascript
+$element.as{{namespace}}();
+```
+
+### [Demo：]()
 
 ## api
 
@@ -36,3 +76,8 @@ Name | Desc
 
 ## version
 Version: {{version}}
+
+## Copyright and license
+Copyright (C) 2017 amazingSurge.
+
+Licensed under [the LGPL license](LICENSE).
