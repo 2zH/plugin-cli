@@ -3,9 +3,10 @@ import _ from 'lodash/fp'
 import Maybe from './maybe'
 import Handlebars from 'handlebars'
 import fs from 'fs'
+import env from './env'
 
 const output = './README.md'
-const entry = './template.md'
+const entry = path.join(env.__dirname, './template.md')
 const sucessMsg = 'Build success!'
 const failedMsg = 'Build failed!'
 
