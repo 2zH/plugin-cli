@@ -1,9 +1,16 @@
 # Plugin-cli
 
-## Docs [path]
-Build document from constant
+## Installation
+```sh
+npm i 2zH/plugin-cli -g
+```
+---
+## Command
 
-example:
+### plugin docs < *constant-path* \>
+> Build document from constant
+
+**example:**
 ```javascript
 plugin docs js/constant
 ```

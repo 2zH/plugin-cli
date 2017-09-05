@@ -32,6 +32,14 @@ export const makePrompt = (items) =>
         name: item,
         message: `What is "${item}"`
       }))
+export const transpiler = (answers) => 
+  Object.entries(answers)
+    .map(
+      ([k, v]) => ({
+        name: k,
+        desc: v
+      })
+    )
 
 export const fetchConstantFromAnswers = compose(dyimport, resolve, props('constant'))
 export const compilerThenWrite = compose(

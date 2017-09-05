@@ -59,3 +59,6 @@ typings/
 
 # @std/esm cache
 .esm-cache
+
+# test js file
+constant.js

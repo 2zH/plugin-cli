@@ -3,7 +3,7 @@ const program = require('commander')
 const esLoader = require('@std/esm')(module, {
   esm: "all"
 })
-const docs = esLoader('./docs').default
+const docs = esLoader('./src/docs').default
 
 program
   .version('0.0.1')
