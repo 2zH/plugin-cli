@@ -1,6 +1,8 @@
-# {{namespace}}
+# {{Namespace}}
 
 ## Introduction
+> Just a plugin named parallax base on jQuery
+
 - Development: {{namespace}}.js
 - Production: {{namespace}}.min.js
 
@@ -42,12 +44,12 @@ require("{{namespace}}")
 ## Usage
 
 ```javascript
-$('.element').as{{namespace}}();
+$('.element').as{{Namespace}}();
 ```
 
 ### [Demo：]()
 
-## api
+## API
 
 ### Options:
 Options are called on {{namespace}} instances through the {{namespace}} options itself.
@@ -59,7 +61,7 @@ $('.element').as{{Namespace}}({
   option: value
 })
 ```
-or
+or use dataset
 ```html
 <div class="element" data-options="value"></div>
 <script>
@@ -67,11 +69,11 @@ or
 </script>
 ```
 
-Name | Desc
------|-----
+Name | DefaultValue | Desc
+-----|--------------|-----
 {{#each options}}
 {{#with this}}
-{{name}} | {{desc}}
+{{name}} | {{defaultValue}} | {{desc}}
 {{/with}}
 {{/each}}
 

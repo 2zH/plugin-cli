@@ -12,13 +12,10 @@ export default class Maybe {
   }
 
   map(f) {
-    if (this.isNothing()) {
-      return Maybe.of(null);
-    }
-    return Maybe.of(f(this.__value));
+    return this.isNothing() ? Maybe.of(null) : Maybe.of(f(this.__value));
   }
 
   join() {
-    return this.__value;
+    return this.isNothing() ? Maybe.of(null) : this.__value;
   }
 }

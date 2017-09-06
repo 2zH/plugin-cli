@@ -1,9 +1,7 @@
 #!/usr/bin/env node
 const program = require('commander')
-const esLoader = require('@std/esm')(module, {
-  esm: "all"
-})
-const docs = esLoader('./src/docs').default
+const esLoader = require('@std/esm')(module)
+const docs = esLoader('./src/commands/docs').default
 
 program
   .version('0.0.1')
