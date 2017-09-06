@@ -12,10 +12,6 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "@std/esm": {
-    "esm": "all",
-    "cjs": true
-  },
   "dependencies": {
     "@std/esm": "^0.7.1",
     "colors": "^1.1.2",

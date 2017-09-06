@@ -3,6 +3,7 @@ import _ from 'lodash/fp'
 import Maybe from './maybe'
 import Handlebars from 'handlebars'
 import fs from 'fs'
+import { __dirname } from 'cjs'
 
 const output = './README.md'
 const entry = path.join(__dirname, '../template.md')
