@@ -1,7 +1,7 @@
 # {{Namespace}}
 
 ## Introduction
-> Just a plugin named parallax base on jQuery
+> Just a plugin named {{parallax}} base on jQuery
 
 - Development: {{namespace}}.js
 - Production: {{namespace}}.min.js
@@ -136,7 +136,7 @@ review the [guidelines for contributing](CONTRIBUTING.md). Make sure you're usin
 ## Changelog
 To see the list of recent changes, see [Releases section](https://github.com/amazingSurge/plugins/releases).
 
-## version
+## Version
 Version: {{version}}
 
 ## Copyright and license
