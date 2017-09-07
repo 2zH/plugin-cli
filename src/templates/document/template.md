@@ -3,10 +3,10 @@
 ## Introduction
 > Just a plugin named {{namespace}} base on jQuery
 
-- Development: {{namespace}}.js
-- Production: {{namespace}}.min.js
+- Development: [{{namespace}}.js]()
+- Production: [{{namespace}}.min.js]()
 
-### [Demo：]()
+### [Demo]()
 ---
 ## Installation
 

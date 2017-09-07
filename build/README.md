@@ -3,10 +3,10 @@
 ## Introduction
 > Just a plugin named parallax base on jQuery
 
-- Development: parallax.js
-- Production: parallax.min.js
+- Development: [parallax.js]()
+- Production: [parallax.min.js]()
 
-### [Demo：]()
+### [Demo]()
 ---
 ## Installation
 
