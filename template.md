@@ -73,7 +73,7 @@ Name | DefaultValue | Desc
 -----|--------------|-----
 {{#each options}}
 {{#with this}}
-{{name}} | {{defaultValue}} | {{desc}}
+`"{{name}}"` | {{defaultValue}} | {{desc}}
 {{/with}}
 {{/each}}
 
@@ -85,7 +85,7 @@ Name | Desc
 -----|-----
 {{#each events}}
 {{#with this}}
-{{name}} | {{desc}}
+`"{{name}}"` | {{desc}}
 {{/with}}
 {{/each}}
 
@@ -97,7 +97,7 @@ Name | Desc
 -----|-----
 {{#each methods}}
 {{#with this}}
-{{name}} | {{desc}}
+`"{{name}}"` | {{desc}}
 {{/with}}
 {{/each}}
 
@@ -107,7 +107,7 @@ Name | Desc
 -----|-----
 {{#each classes}}
 {{#with this}}
-{{name}} | {{desc}}
+`"{{name}}"` | {{desc}}
 {{/with}}
 {{/each}}
 

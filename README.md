@@ -7,7 +7,7 @@ npm i 2zH/plugin-cli -g
 ---
 ## Command
 
-### plugin docs < *constant-path* \>
+### plugin docs <*constant-path*\>
 > Build document from constant
 
 **example:**
