@@ -16,6 +16,6 @@ export default class Maybe {
   }
 
   join() {
-    return this.isNothing() ? Maybe.of(null) : this.__value;
+    return this.isNothing() ? null : this.__value;
   }
 }

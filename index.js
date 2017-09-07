@@ -10,6 +10,7 @@ program
 program
   .command('docs [name]')
   .description('build api document')
-  .action((name, options) => docs(name))
+  .option('-r, --root [path]', 'Add plugins path')
+  .action((name, options) => docs(name, options))
 
 program.parse(process.argv)

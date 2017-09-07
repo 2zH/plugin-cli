@@ -1,6 +1,5 @@
 const asyncCompose = (...rest) => async (v) => rest
-  .reverse()
-  .reduce(
+  .reduceRight(
     async (initResult, func) => {
       const result = await initResult(v)
       return func(result)
