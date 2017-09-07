@@ -1,11 +1,12 @@
 # Parallax
 
 ## Introduction
-> Just a plugin named  base on jQuery
+> Just a plugin named parallax base on jQuery
 
 - Development: parallax.js
 - Production: parallax.min.js
 
+### [Demo：]()
 ---
 ## Installation
 
@@ -13,7 +14,7 @@
 - jQuery
 - @plugins/core
 
-### **NPM**
+### NPM
 
 Install the module:
 
@@ -33,7 +34,7 @@ CommonJS
 require("parallax")
 ```
 
-### **HTML import**
+### HTML import:
 
 ```html
 <link rel="stylesheet" href="/path/to/parallax.css">
@@ -46,9 +47,7 @@ require("parallax")
 ```javascript
 $('.element').asParallax();
 ```
-
-### [Demo：]()
-
+---
 ## API
 
 ### Options:
@@ -58,12 +57,12 @@ You can also save the instances to variable for further use.
 **Example**
 ```javascript
 $('.element').asParallax({
-  theme: <value>
+  theme: "foo"
 })
 ```
 or use dataset
 ```html
-<div class="element" data-theme="value"></div>
+<div class="element" data-theme="foo"></div>
 <script>
   $('.element').asParallax()
 </script>
@@ -125,11 +124,11 @@ Name | Desc
 **example:**
 ```javascript
 $parallax.asParallax(value)
-$parallax.asParallax(value, <value>)
-$parallax.asParallax(value, <value>, <value>)
+$parallax.asParallax(value, "foo")
+$parallax.asParallax(value, "foo", "bar")
 ```
 
-
+---
 ## Browser support
 
 Tested on all major browsers.

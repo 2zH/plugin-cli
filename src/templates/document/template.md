@@ -1,11 +1,12 @@
 # {{Namespace}}
 
 ## Introduction
-> Just a plugin named {{parallax}} base on jQuery
+> Just a plugin named {{namespace}} base on jQuery
 
 - Development: {{namespace}}.js
 - Production: {{namespace}}.min.js
 
+### [Demo：]()
 ---
 ## Installation
 
@@ -13,7 +14,7 @@
 - jQuery
 - @plugins/core
 
-### **NPM**
+### NPM
 
 Install the module:
 
@@ -33,7 +34,7 @@ CommonJS
 require("{{namespace}}")
 ```
 
-### **HTML import**
+### HTML import:
 
 ```html
 <link rel="stylesheet" href="/path/to/{{namespace}}.css">
@@ -46,9 +47,7 @@ require("{{namespace}}")
 ```javascript
 $('.element').as{{Namespace}}();
 ```
-
-### [Demo：]()
-
+---
 ## API
 
 ### Options:
@@ -135,7 +134,7 @@ Name | Desc
 {{/each}}
 
 {{/if}}
-
+---
 ## Browser support
 
 Tested on all major browsers.
