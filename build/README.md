@@ -1,10 +1,10 @@
-# {{Namespace}}
+# Parallax
 
 ## Introduction
-> Just a plugin named {{parallax}} base on jQuery
+> Just a plugin named  base on jQuery
 
-- Development: {{namespace}}.js
-- Production: {{namespace}}.min.js
+- Development: parallax.js
+- Production: parallax.min.js
 
 ---
 ## Installation
@@ -18,33 +18,33 @@
 Install the module:
 
 ```javascript
-npm i @plugins/{{namespace}}
+npm i @plugins/parallax
 ```
 
 ES2015+
 
 ```javascript
-import "{{namespace}}"
+import "parallax"
 ```
 
 CommonJS
 
 ```javascript
-require("{{namespace}}")
+require("parallax")
 ```
 
 ### **HTML import**
 
 ```html
-<link rel="stylesheet" href="/path/to/{{namespace}}.css">
+<link rel="stylesheet" href="/path/to/parallax.css">
 <script src="/path/to/jquery.js"></script>
-<script src="/path/to/{{namespace}}.js"></script>
+<script src="/path/to/parallax.js"></script>
 ```
 ---
 ## Usage
 
 ```javascript
-$('.element').as{{Namespace}}();
+$('.element').asParallax();
 ```
 
 ### [Demo：]()
@@ -52,66 +52,83 @@ $('.element').as{{Namespace}}();
 ## API
 
 ### Options:
-Options are called on {{namespace}} instances through the {{namespace}} options itself.
+Options are called on parallax instances through the parallax options itself.
 You can also save the instances to variable for further use.
 
 **Example**
 ```javascript
-$('.element').as{{Namespace}}({
-  option: value
+$('.element').asParallax({
+  theme: <value>
 })
 ```
 or use dataset
 ```html
-<div class="element" data-options="value"></div>
+<div class="element" data-theme="value"></div>
 <script>
-  $('.element').as{{Namespace}}()
+  $('.element').asParallax()
 </script>
 ```
 
 Name | DefaultValue | Desc
 -----|--------------|-----
-{{#each options}}
-{{#with this}}
-`"{{name}}"` | {{defaultValue}} | {{desc}}
-{{/with}}
-{{/each}}
+`"theme"` | null | 1
+`"speed"` | 1000 | 1
+`"delayType"` | throttle | 1
+`"delay"` | 100 | 1
 
 ### Events:
-Events are called on {{namespace}} instances through the {{namespace}} events itself.
+Events are called on parallax instances through the parallax events itself.
 You can also save the instances to variable for further use.
 
 Name | Desc
 -----|-----
-{{#each events}}
-{{#with this}}
-`"{{name}}"` | {{desc}}
-{{/with}}
-{{/each}}
+`"ready"` | 1
+`"enable"` | 1
+`"disable"` | 1
+`"destroy"` | 1
+`"enter"` | 1
+
+**example:**
+```javascript
+$parallax.asParallax({
+  onReady: function() {
+    // code...
+  }
+})
+
+$parallax.on(
+  'parallax:ready',
+  function(){
+  // code...
+  }
+)
+```
 
 ### Methods:
-Methods are called on {{namespace}} instances through the {{namespace}} method itself.
+Methods are called on parallax instances through the parallax method itself.
 You can also save the instances to variable for further use.
 
 Name | Desc
 -----|-----
-{{#each methods}}
-{{#with this}}
-`"{{name}}"` | {{desc}}
-{{/with}}
-{{/each}}
+`"value"` | 1
+`"enable"` | 1
+`"disable"` | 1
+`"destroy"` | 1
+`"setAnimation"` | 1
+`"setAnimationDelay"` | 1
+`"beforeLoad"` | 1
+`"afterLoad"` | 1
+`"load"` | 1
+`"isLoad"` | 1
+`"setDelay"` | 1
 
-{{#if classes}}
-### Classes:
-Name | Desc
------|-----
-{{#each classes}}
-{{#with this}}
-`"{{name}}"` | {{desc}}
-{{/with}}
-{{/each}}
+**example:**
+```javascript
+$parallax.asParallax(value)
+$parallax.asParallax(value, <value>)
+$parallax.asParallax(value, <value>, <value>)
+```
 
-{{/if}}
 
 ## Browser support
 
@@ -125,7 +142,7 @@ As a jQuery plugin, you also need to see the [jQuery Browser Support](http://jqu
 
 ## Contributing
 Anyone and everyone is welcome to contribute. Please take a moment to
-review the [guidelines for contributing](CONTRIBUTING.md). Make sure you're using the latest version of `@plugins/{{namespace}}` before submitting an issue. There are several ways to help out:
+review the [guidelines for contributing](CONTRIBUTING.md). Make sure you're using the latest version of `@plugins/parallax` before submitting an issue. There are several ways to help out:
 
 * [Bug reports](CONTRIBUTING.md#bug-reports)
 * [Feature requests](CONTRIBUTING.md#feature-requests)
@@ -137,7 +154,7 @@ review the [guidelines for contributing](CONTRIBUTING.md). Make sure you're usin
 To see the list of recent changes, see [Releases section](https://github.com/amazingSurge/plugins/releases).
 
 ## Version
-Version: {{version}}
+Version: 0.0.1
 
 ## Copyright and license
 Copyright (C) 2017 amazingSurge.

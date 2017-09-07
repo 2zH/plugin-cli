@@ -14,7 +14,7 @@ const { resolve } = path
 const { curry, compose } = _
 
 const output = './README.md'
-const entry = path.join(__dirname, '../../template.md')
+const entry = path.join(__dirname, '../templates/document/template.md')
 const sucessMsg = '\n🎉 Build success!\n'
 const failedMsg = '\n😞 Build failed!\n'
 
