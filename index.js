@@ -13,4 +13,9 @@ program
   .option('-r, --root [path]', 'Add plugins path')
   .action((name, options) => docs(name, options))
 
+program
+  .command('config <command> [key] [value]')
+  .description('config something')
+  .action((command, key, value) => console.log(command, key, value))
+
 program.parse(process.argv)

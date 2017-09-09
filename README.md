@@ -19,3 +19,15 @@ or
 plugin docs
 // Please ask me the file path
 ```
+
+## options: link plugins project dir
+
+*< -r , --root >:*
+```javascript
+plugin docs parallax --root ~/WorkSpaces/plugins
+```
+or
+```javascript
+plugin docs --root ~/WorkSpaces/plugins
+// Please ask me the module name
+```
