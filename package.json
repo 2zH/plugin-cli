@@ -22,6 +22,6 @@
 		"rollup": "^0.49.3"
 	},
 	"plugin-cli": {
-		"root": ""
+		"root": "/home/taugocauci/Workspaces/plugins"
 	}
 }

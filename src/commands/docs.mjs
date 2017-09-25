@@ -70,13 +70,15 @@ export default async function docs(path, { root }) {
   const projectRoot = root || meta['plugin-cli'].root
   const constantPath = path || await openQuestions
     .map(props('constant'))
-    .fork(
-      [{ type: 'input', name: 'constant', message: '🔧 Please type where is constant ?' }]
-    )
+    .fork([{
+      type: 'input',
+      name: 'constant',
+      message: '🔧 Please type where is constant ?'
+    }])
   const constant = await readContent.fork(
     projectRoot ? `${projectRoot}/plugins/${constantPath}/js/constant.js` : constantPath
   )
-  const { namespace, api, info: { version } } = constant
+  const { namespace, info: { version }, ...api } = constant
 
   const Namespace = upperFirstWord(namespace)
 
