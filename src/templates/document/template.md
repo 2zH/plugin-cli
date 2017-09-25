@@ -50,6 +50,7 @@ $('.element').as{{Namespace}}();
 ---
 ## API
 
+{{#if options}}
 ### Options:
 Options are called on {{namespace}} instances through the {{namespace}} options itself.
 You can also save the instances to variable for further use.
@@ -72,10 +73,12 @@ Name | DefaultValue | Desc
 -----|--------------|-----
 {{#each options}}
 {{#with this}}
-`"{{name}}"` | {{defaultValue}} | {{desc}}
+`"{{name}}"` | `{{defaultValue}}` | {{desc}}
 {{/with}}
 {{/each}}
+{{/if}}
 
+{{#if events}}
 ### Events:
 Events are called on {{namespace}} instances through the {{namespace}} events itself.
 You can also save the instances to variable for further use.
@@ -103,7 +106,8 @@ ${{namespace}}.on(
   }
 )
 ```
-
+{{/if}}
+{{#if methods}}
 ### Methods:
 Methods are called on {{namespace}} instances through the {{namespace}} method itself.
 You can also save the instances to variable for further use.
@@ -122,15 +126,36 @@ ${{namespace}}.as{{Namespace}}({{method}})
 ${{namespace}}.as{{Namespace}}({{method}}, "foo")
 ${{namespace}}.as{{Namespace}}({{method}}, "foo", "bar")
 ```
+{{/if}}
 
 {{#if classes}}
 ### Classes:
-Name | Desc
------|-----
+Name | Desc | Value
+-----|------|------
 {{#each classes}}
 {{#with this}}
-`"{{name}}"` | {{desc}}
+`"{{name}}"` | {{desc}} | `{{value}}`
 {{/with}}
+{{/each}}
+
+{{/if}}
+
+{{#if translations}}
+### Translations:
+Name | EN | ZH
+-----|------|-------
+{{#each translations}}
+{{#with this}}
+`"{{name}}"` | {{en}} | {{zh}}
+{{/with}}
+{{/each}}
+
+{{/if}}
+
+{{#if dependencies}}
+### Dependencies:
+{{#each dependencies}}
+- `{{this}}`
 {{/each}}
 
 {{/if}}
