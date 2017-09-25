@@ -64,10 +64,12 @@ const isExists = async(data, left, right) => {
   }
   return right ? right() : null
 }
-const documentBuild = compilerThenWrite(entry, output)
 
 export default async function docs(path, { root }) {
   const projectRoot = root || meta['plugin-cli'].root
+  const documentBuild = compilerThenWrite(entry, 
+    projectRoot ? `${projectRoot}/plugins/${constantPath}/README.md` : output
+  )
   const constantPath = path || await openQuestions
     .map(props('constant'))
     .fork([{
@@ -165,6 +167,5 @@ export default async function docs(path, { root }) {
     classes,
     translations,
     dependencies,
-    version
-  });
+    version });
 }
