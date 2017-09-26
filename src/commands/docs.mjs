@@ -12,7 +12,7 @@ import {
   props,
   upperFirstWord
 } from '../../lib'
-import 'colors'
+import chalk from 'chalk'
 import meta from '../../package.json'
 
 const output = './README.md'
@@ -84,7 +84,7 @@ export default async function docs(path, { root }) {
 
   const Namespace = upperFirstWord(namespace)
 
-  console.log('\n🚚 Please tell me about options'.gray)
+  console.log(chalk.gray(`\n🚚 Please tell me about options`))
   const optionsPrompt = safeify(
     makePrompt,
     Object.keys
@@ -98,7 +98,7 @@ export default async function docs(path, { root }) {
   const options = merge2Options(api.defaults)
   const option = options[0].name
 
-  console.log('\n🚚 Please tell me about events'.yellow)
+  console.log(chalk.yellow('\n🚚 Please tell me about events'))
   const eventsPrompt = safeify(
     makePrompt,
     Object.values
@@ -107,14 +107,14 @@ export default async function docs(path, { root }) {
   const event = events[0].name
   const Event = upperFirstWord(event)
 
-  console.log('\n🚀 Please tell me about methods'.blue)
+  console.log(chalk.blue('\n🚀 Please tell me about methods'))
   const methods = await openQuestionsThenTranspiler.fork(makePrompt(api.methods))
   const method = methods && methods[0].name
 
   const classes = await isExists(
     api.classes,
     async() => {
-      console.log('\n💡 Please tell me about classes'.green)
+      console.log(chalk.green('\n💡 Please tell me about classes'))
       const classPrompt = safeify(
         makePrompt,
         Object.keys
@@ -127,7 +127,7 @@ export default async function docs(path, { root }) {
       return merge2Classes(api.classes)
     },
     () => {
-      console.log('\n☠ Classes is not exists'.red)
+      console.log(chalk.red('\n☠ Classes is not exists'))
     }
   )
   const translations = await isExists(
@@ -146,12 +146,12 @@ export default async function docs(path, { root }) {
           ...translation
         }
       }),
-    () => console.log('\n☠ Translations is not exists'.red)
+    () => console.log(chalk.red('\n☠ Translations is not exists'))
   )
   const dependencies = await isExists(
     api.dependencies,
     false,
-    () => (console.log('\n☠ Dependencies is not exists'.red))
+    () => (console.log(chalk.red('\n☠ Dependencies is not exists')))
   )
 
   documentBuild({
