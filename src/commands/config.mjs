@@ -7,7 +7,7 @@ import path from 'path'
 
 const writer = (cliMeta) => {
   return fs.writeFileSync(
-    projectDir('package.json'),
+    path.join(projectDir, 'package.json'),
     JSON.stringify({
       ...meta,
       'plugin-cli': cliMeta

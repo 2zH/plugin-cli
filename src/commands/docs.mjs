@@ -14,9 +14,10 @@ import {
 } from '../../lib'
 import chalk from 'chalk'
 import meta from '../../package.json'
+import path from 'path'
 
 const output = './README.md'
-const entry = projectDir('src/templates/document/template.md')
+const entry = path.join(projectDir, 'src/templates/document/template.md')
 
 const log = (v) => {
   console.log(v)
