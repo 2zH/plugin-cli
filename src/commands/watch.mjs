@@ -32,28 +32,6 @@ export default function watch (name) {
   }
   const cssRule = {
     test: /\.scss$/,
-    // use: [
-      // {
-      //   loader: 'style-loader'
-      // },
-      // {
-      //   loader: 'css-loader'
-      // },
-      // {
-      //   loader: 'cssassetify-loader',
-      //   options: {
-      //     path: `plugins/${name}/${name}.css`
-      //   }
-      // },
-    //   {
-    //     loader: 'sass-loader',
-    //     options: {
-    //       outputStyle: 'nested',
-    //       includePaths: ['./plugins/core/css', 'node_modules']
-    //         .map(addr => path.join(rootDir, addr))
-    //     }
-    //   }
-    // ]
     use:  ['css-hot-loader'].concat(
       ExtractTextPlugin.extract({
         fallback: 'style-loader',
@@ -75,9 +53,6 @@ export default function watch (name) {
     use: [
       {
         loader: 'html-loader',
-        // options: {
-        //   name: 'index.html'
-        // }
       },
       {
         loader: 'assemble-loader',
