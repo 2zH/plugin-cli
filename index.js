@@ -5,6 +5,7 @@ const docs = esLoader('./src/commands/docs').default
 const config = esLoader('./src/commands/config').default
 const run = esLoader('./src/commands/run').default
 const build = esLoader('./src/commands/build').default
+const watch = esLoader('./src/commands/watch').default
 
 program
   .version('0.0.1')
@@ -30,5 +31,10 @@ program
   .command('build [name]')
   .description('build plugin')
   .action((name) => build(name))
+
+program
+  .command('watch [name]')
+  .description('watch plugin')
+  .action((name) => watch(name))
 
 program.parse(process.argv)

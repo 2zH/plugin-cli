@@ -1,7 +1,7 @@
 (function (global, factory) {
 	typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory(require('jquery')) :
 	typeof define === 'function' && define.amd ? define(['jquery'], factory) :
-	(global.As = factory(global.jquery));
+	(global.As = factory(global.jQuery));
 }(this, (function ($$1) { 'use strict';
 
 $$1 = $$1 && $$1.hasOwnProperty('default') ? $$1['default'] : $$1;
@@ -4459,6 +4459,8 @@ var viewport = function viewport() {
   return Viewport.of.apply(Viewport, arguments);
 };
 
+const test1 = () => console.log(this)
+
 var As = {
   Plugin: Plugin,
   GlobalPlugin: GlobalPlugin,
@@ -4474,6 +4476,10 @@ var As = {
       return this.plugins[name];
     }
     return null;
+  },
+  test1,
+  test2: function test2() {
+    console.log(this)
   },
   register: function register(name, plugin) {
     for (var _len = arguments.length, args = Array(_len > 2 ? _len - 2 : 0), _key = 2; _key < _len; _key++) {

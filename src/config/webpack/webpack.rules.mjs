@@ -1,4 +1,5 @@
-import babelOpts from '../babelOpts';
+import { presets, plugins } from '../common/babelOpts';
+import ExtractTextPlugin from 'extract-text-webpack-plugin'
 
 const jsRule = {
   test: /\.js$/,
@@ -7,7 +8,7 @@ const jsRule = {
     loader: 'babel-loader',
     options: {
       presets,
-      cacheDirectory: true
+      plugins
     }
   }
 }

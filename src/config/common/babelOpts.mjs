@@ -1,4 +1,4 @@
-export default [
+export const presets = [
   ['env', {
     modules: false,
     target: {
@@ -11,6 +11,11 @@ export default [
       ]
     },
     useBuiltIns: false
-  }],
-  'stage-0'
+  }]
+]
+
+export const plugins = [
+  'transform-decorators-legacy',
+  'transform-object-rest-spread',
+  'transform-class-properties'
 ]
