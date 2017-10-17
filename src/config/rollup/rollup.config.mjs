@@ -20,5 +20,6 @@ export const inputOptions = {
 
 export const outputOptions = {
   format: 'umd',
-  globals: externals
+  globals: externals,
+  exports: 'named'
 }

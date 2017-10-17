@@ -7,6 +7,14 @@ npm i 2zH/plugin-cli -g
 ---
 ## Command
 
+### plugin watch [moduler]
+
+### plugin build [moduler]
+
+### plugin lint [moduler]
+
+### plugin config [action] [key] <value>
+
 ### plugin docs <*constant-path*\>
 > Build document from constant
 

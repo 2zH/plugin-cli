@@ -6,6 +6,8 @@ const config = esLoader('./src/commands/config').default
 const run = esLoader('./src/commands/run').default
 const build = esLoader('./src/commands/build').default
 const watch = esLoader('./src/commands/watch').default
+const dependencies = esLoader('./src/commands/dependencies').default
+const lint = esLoader('./src/commands/lint').default
 
 program
   .version('0.0.1')
@@ -30,11 +32,21 @@ program
 program
   .command('build [name]')
   .description('build plugin')
-  .action((name) => build(name))
+  .action(build)
 
 program
   .command('watch [name]')
   .description('watch plugin')
-  .action((name) => watch(name))
+  .action(watch)
+
+program
+  .command('dependencies')
+  .description('make dependencies')
+  .action(dependencies)
+
+program
+  .command('lint [name]')
+  .description('make lint')
+  .action(lint)
 
 program.parse(process.argv)
