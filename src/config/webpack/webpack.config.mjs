@@ -1,27 +1,31 @@
-import ExtractTextPlugin from 'extract-text-webpack-plugin'
-import HtmlWebpackPlugin from 'html-webpack-plugin'
-import externals from '../common/externals'
-import rules from './webpack.rules'
-import Webpack from 'webpack'
-import fs from 'fs'
-import path from 'path'
 import {
-  projectDir,
+  projectPath,
   pkgConfig
 } from '../../../lib'
+import {
+  getPluginsPath
+} from '../path'
+import fs from 'fs'
+import path from 'path'
+import Webpack from 'webpack'
+import rules from './webpack.rules'
+import externals from '../common/externals'
+import HtmlWebpackPlugin from 'html-webpack-plugin'
+import ExtractTextPlugin from 'extract-text-webpack-plugin'
 
+const rootPath = pkgConfig.root
 export default function config(name) {
-  const rootDir = pkgConfig.root
-  const pluginDir = path.join(rootDir, `plugins/${name}`)
-  const jsPath = path.join(pluginDir, './main.js')
-  const hbsPath = path.join(pluginDir, `./html/${name}.hbs`)
-  const cssPath = path.join(pluginDir, `./css/${name}.scss`)
-  const cssIsExists = fs.existsSync(cssPath)
-
-  const entry = cssIsExists ? [jsPath, cssPath, hbsPath] : [jsPath, hbsPath]
+  const { 
+    jsPath,
+    scssPath,
+    hbsPath,
+    coreCssPath
+  } = getPluginsPath(name)
+  const cssIsExists = fs.existsSync(scssPath)
+  const entry = cssIsExists ? [jsPath, scssPath, hbsPath] : [jsPath, hbsPath]
   const output = {
     filename: `plugins/${name}/${name}.js`,
-    path: path.join(projectDir, './build'),
+    path: path.join(projectPath, './build'),
     publicPath: '/',
     library: name,
     libraryTarget: 'umd'
@@ -37,8 +41,7 @@ export default function config(name) {
           loader: 'sass-loader',
           options: {
             outputStyle: 'nested',
-            includePaths: ['./plugins/core/css', 'node_modules']
-              .map((addr) => path.join(rootDir, addr))
+            includePaths: [coreCssPath, `${rootPath}/node_modules`]
           }
         }]
       })
@@ -53,11 +56,11 @@ export default function config(name) {
       {
         loader: 'assemble-loader',
         options: {
-          partials: path.join(rootDir, 'src/html/partials/*.hbs'),
-          layouts: path.join(rootDir, 'src/html/layouts/*.hbs'),
-          data: path.join(rootDir, 'src/html/data/*.{json,yml}'),
-          helpers: path.join(rootDir, 'src/html/helpers/*.js'),
-          pages: path.join(rootDir, 'src/html/pages/*.hbs')
+          partials: path.join(rootPath, 'src/html/partials/*.hbs'),
+          layouts: path.join(rootPath, 'src/html/layouts/*.hbs'),
+          data: path.join(rootPath, 'src/html/data/*.{json,yml}'),
+          helpers: path.join(rootPath, 'src/html/helpers/*.js'),
+          pages: path.join(rootPath, 'src/html/pages/*.hbs')
         }
       }
     ]
@@ -81,8 +84,9 @@ export default function config(name) {
     output,
     externals,
     module,
+    context: projectPath,
     resolve: {
-      modules: ['node_modules']
+      modules: ['node_modules', path.join(rootPath, 'node_modules')]
     },
     resolveLoader: {
       modules: ['node_modules', 'packages']
@@ -91,7 +95,7 @@ export default function config(name) {
   }
 
   const devOps = {
-    contentBase: path.join(projectDir, './build'),
+    contentBase: path.join(projectPath, './build'),
     hot: true,
     publicPath: '/',
     port: 8080,

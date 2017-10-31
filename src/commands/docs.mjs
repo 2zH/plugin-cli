@@ -1,6 +1,6 @@
 import {
   openQuestions,
-  projectDir,
+  projectPath,
   readContent,
   compilerThenWrite,
   safeify,
@@ -10,14 +10,26 @@ import {
   join,
   fork,
   props,
-  upperFirstWord
+  upperFirstWord,
+  pkgConfig
 } from '../../lib'
+import {
+  defaultEvents,
+  defaultMethods,
+  defaultOptions,
+  defaultClasses
+} from '../config/doc/meta.base'
+import {
+  getPluginsPath,
+  getCachePath
+} from '../config/path'
 import chalk from 'chalk'
-import meta from '../../package.json'
 import path from 'path'
+import fs from 'fs'
+import stripJsonComments from 'strip-json-comments'
+import prettierEslint from 'prettier-eslint'
 
-const output = './README.md'
-const entry = path.join(projectDir, 'src/templates/document/template.md')
+const entry = path.join(projectPath, 'src/templates/document/template.md')
 
 const log = (v) => {
   console.log(v)
@@ -30,8 +42,42 @@ const transpiler = (answers) => Object.entries(answers)
 const openQuestionsThenTranspiler = openQuestions.map(transpiler)
 
 const makePrompt = (items) => items.map(
-  item => ({ type: 'input', name: item, message: `What is "${item}"`})
+  item => ({
+    type: 'input',
+    name: item,
+    message: `What is "${item}"`
+  })
 )
+const addDefaultValue = curry((type, inquirerList) => {
+  const getDefaultValue = (defaultValueCollect) => {
+    return inquirerList.map((inquirerObj) => {
+      if (!defaultValueCollect[inquirerObj.name]) {
+        return inquirerObj
+      }
+      return {
+        default: defaultValueCollect[inquirerObj.name],
+        ...inquirerObj
+      }
+    })
+  }
+  switch (type) {
+    case 'events': {
+      return getDefaultValue(defaultEvents)
+    }
+    case 'methods': {
+      return getDefaultValue(defaultMethods)
+    }
+    case 'options': {
+      return getDefaultValue(defaultOptions)
+    }
+    case 'classes': {
+      return getDefaultValue(defaultClasses)
+    }
+    default: {
+      return inquirerObject
+    }
+  }
+})
 const makePromptThenOpenQuestions = compose(
   fork(openQuestionsThenTranspiler),
   safeify(makePrompt)
@@ -66,27 +112,35 @@ const isExists = async(data, left, right) => {
   return right ? right() : null
 }
 
-export default async function docs(path, { root }) {
-  const projectRoot = root || meta['plugin-cli'].root
-  const constantPath = path || await openQuestions
+export default async function docs(moduleName, { update }) {
+  const projectRoot = pkgConfig.root
+  if (!projectRoot) {
+    console.log('Plugins root path is undefined, please set it!')
+    console.log('plugin-cli config set root <plugin-root-path>')
+    return console.log('\n')
+  }
+  moduleName = moduleName || await openQuestions
     .map(props('constant'))
     .fork([{
       type: 'input',
       name: 'constant',
       message: '🔧 Please type where is constant ?'
     }])
-  const constant = await readContent.fork(
-    projectRoot ? `${projectRoot}/plugins/${constantPath}/js/constant.js` : constantPath
-  )
-  const documentBuild = compilerThenWrite(entry, 
-    projectRoot ? `${projectRoot}/plugins/${constantPath}/README.md` : output
-  )
+  const { docPath, constantPath } = getPluginsPath(moduleName)
+  const { docJsCachePath } = getCachePath(moduleName)
+  const documentBuild = compilerThenWrite(entry, docPath)
+  if (update) {
+    return import(docJsCachePath)
+      .then((meta) => documentBuild(meta.default))
+  }
+  const constant = await readContent.fork(constantPath)
   const { namespace, info: { version }, ...api } = constant
 
   const Namespace = upperFirstWord(namespace)
 
   console.log(chalk.gray(`\n🚚 Please tell me about options`))
   const optionsPrompt = safeify(
+    addDefaultValue('options'),
     makePrompt,
     Object.keys
   )
@@ -101,6 +155,7 @@ export default async function docs(path, { root }) {
 
   console.log(chalk.yellow('\n🚚 Please tell me about events'))
   const eventsPrompt = safeify(
+    addDefaultValue('events'),
     makePrompt,
     Object.values
   )
@@ -109,7 +164,9 @@ export default async function docs(path, { root }) {
   const Event = upperFirstWord(event)
 
   console.log(chalk.blue('\n🚀 Please tell me about methods'))
-  const methods = await openQuestionsThenTranspiler.fork(makePrompt(api.methods))
+  const methods = await openQuestionsThenTranspiler.fork(
+    addDefaultValue('methods', makePrompt(api.methods))
+  )
   const method = methods && methods[0].name
 
   const classes = await isExists(
@@ -117,6 +174,7 @@ export default async function docs(path, { root }) {
     async() => {
       console.log(chalk.green('\n💡 Please tell me about classes'))
       const classPrompt = safeify(
+        addDefaultValue('classes'),
         makePrompt,
         Object.keys
       )
@@ -154,8 +212,7 @@ export default async function docs(path, { root }) {
     false,
     () => (console.log(chalk.red('\n☠ Dependencies is not exists')))
   )
-
-  documentBuild({
+  const cacheData = {
     namespace,
     Namespace,
     options,
@@ -168,5 +225,18 @@ export default async function docs(path, { root }) {
     classes,
     translations,
     dependencies,
-    version });
+    version
+  }
+  const eslintConfig = JSON.parse(
+    stripJsonComments(
+      fs.readFileSync(path.join(projectRoot, '.eslintrc.json'), 'utf8')
+    )
+  )
+  const eslintOptions = {
+    text: `const meta = ${JSON.stringify(cacheData)};export default meta`,
+    eslintConfig
+  }
+  const formatted = prettierEslint(eslintOptions)
+  fs.writeFileSync(docJsCachePath, formatted)
+  documentBuild(cacheData);
 }

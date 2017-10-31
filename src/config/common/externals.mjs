@@ -1,7 +1,7 @@
 export default {
   jquery: 'jQuery',
-  As: 'As',
-  animejs: 'animejs',
+  '@plugin/core': 'core',
+  // animejs: 'animejs',
   tether: 'Tether',
   hammerjs: 'Hammer'
 }

@@ -1,0 +1,61 @@
+{
+  "packages": {
+    "npm:bootstrap": [{
+      "js": "dist/js/*.min.js",
+      "css": "dist/css/*.min.css"
+    }],
+    "npm:jquery": true,
+    "npm:jquery-mousewheel": true,
+    "npm:anchor-js": true,
+    "npm:animejs": {
+      "js": ["anime.min.js"]
+    },
+    "npm:jquery-validation": {
+      "js": "dist/jquery.validate.min.js"
+    },
+    "npm:animate.css": {
+      "css": ["animate.min.css"]
+    },
+    "npm:hammerjs": {
+      "js": ["hammer.min.js", "hammer.min.js.map"]
+    },
+    "npm:holderjs": true,
+    "npm:font-awesome": {
+      "css": "css/*.min.css",
+      "fonts": [
+        "FontAwesome.*",
+        "fontawesome-webfont.*"
+      ]
+    },
+    "npm:sortablejs": {
+      "js": "*.min.js"
+    },
+    "npm:tether":{
+      "js":"dist/js/tether.min.js",
+      "css":[
+        "dist/css/tether.min.css"
+      ]
+    },
+    "npm:object-fit-images":{
+      "js":"dist/ofi.min.js"
+    },
+    "npm:webfontloader":{
+      "js":"webfontloader.js"
+    },
+    "npm:tocbot": {
+      "js": "dist/tocbot.min.js",
+      "css": "dist/tocbot.css"
+    },
+    "npm:highlight.js": {
+      "js": "lib/highlight.js",
+      "css": {
+        "highlight.css": "styles/atom-one-dark.css"
+      }
+    },
+    "libs:js": {
+      "js": {
+        "passwordStrength.js": "passwordStrength.js"
+      }
+    }
+  }
+}

@@ -1,5 +1,4 @@
 import { presets, plugins } from '../common/babelOpts';
-import ExtractTextPlugin from 'extract-text-webpack-plugin'
 
 const jsRule = {
   test: /\.js$/,

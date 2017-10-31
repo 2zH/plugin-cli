@@ -1,13 +1,16 @@
 #!/usr/bin/env node
 const program = require('commander')
-const esLoader = require('@std/esm')(module)
-const docs = esLoader('./src/commands/docs').default
-const config = esLoader('./src/commands/config').default
-const run = esLoader('./src/commands/run').default
-const build = esLoader('./src/commands/build').default
-const watch = esLoader('./src/commands/watch').default
-const dependencies = esLoader('./src/commands/dependencies').default
-const lint = esLoader('./src/commands/lint').default
+const require_esm = require('@std/esm')(module)
+const {
+  docs,
+  config,
+  build,
+  watch,
+  dependencies,
+  lint,
+  test,
+  commitAnalysis
+} = require_esm('./src/commands')
 
 program
   .version('0.0.1')
@@ -17,26 +20,26 @@ program
   .command('docs [name]')
   .description('build api document')
   .option('-r, --root [path]', 'Add plugins path')
-  .action((name, options) => docs(name, options))
+  .option('-u, --update', 'Update template')
+  .action(docs)
 
 program
   .command('config <command> [key] [value]')
   .description('config something')
-  .action((command, key, value) => config(command, key, value))
-
-program
-  .command('run [name]')
-  .description('run plugin')
-  .action((name) => run(name))
+  .action(config)
 
 program
   .command('build [name]')
   .description('build plugin')
+  .option('-cr, --core-rebuild', 'rebuild @plugin/core part')
+  .option('-dr, --dependencies-rebuild', 'rebuild dependices')
   .action(build)
 
 program
   .command('watch [name]')
   .description('watch plugin')
+  .option('-cr, --core-rebuild', 'rebuild @plugin/core part')
+  .option('-dr, --dependencies-rebuild', 'rebuild dependices')
   .action(watch)
 
 program
@@ -47,6 +50,17 @@ program
 program
   .command('lint [name]')
   .description('make lint')
+  .option('--before-commit', 'checke code before commit')
   .action(lint)
+
+program
+  .command('test [name]')
+  .description('run unit test')
+  .action(test)
+
+program
+  .command('commit analysis')
+  .description('analysis git status log')
+  .action(commitAnalysis)
 
 program.parse(process.argv)

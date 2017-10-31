@@ -1,21 +1,21 @@
 import meta from '../../package.json'
 import {
-  projectDir
+  projectPath
 } from '../../lib'
 import fs from 'fs'
 import path from 'path'
 
-const writer = (cliMeta) => {
+const writer = (commandLineMeta) => {
   return fs.writeFileSync(
-    path.join(projectDir, 'package.json'),
+    path.join(projectPath, 'package.json'),
     JSON.stringify({
       ...meta,
-      'plugin-cli': cliMeta
+      'plugin-cli': commandLineMeta
     }, null, '\t')
   )
 }
 
-const cliMeta = meta['plugin-cli']
+const commandLineMeta = meta['plugin-cli']
 
 export default function config(command, key, value) {
   
@@ -24,7 +24,7 @@ export default function config(command, key, value) {
       return console.log('[key] is not empty')
     }
 
-    return console.log(cliMeta[key])
+    return console.log(commandLineMeta[key])
   }
 
   if (command === 'set') {
@@ -37,7 +37,7 @@ export default function config(command, key, value) {
     }
 
     return writer({
-      ...cliMeta,
+      ...commandLineMeta,
       [key]: value || ''
     })
   }

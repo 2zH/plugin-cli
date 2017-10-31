@@ -1,51 +1,71 @@
-import meta from '../../package.json'
-import { projectDir } from '../../lib'
+import {
+  pkgConfig
+} from '../../lib'
+import {
+  inputOptions,
+  outputOptions
+} from '../config/rollup/rollup.config'
 import path from 'path'
 import rollup from 'rollup'
 import chalk from 'chalk'
-import { inputOptions, outputOptions } from '../config/rollup/rollup.config'
-import ora from 'ora'
+import Ora from 'ora'
 import sass from 'node-sass'
 import fs from 'fs'
+import {
+  getCachePath,
+  getPluginsPath
+} from '../config/path'
 
-const rootDir = meta['plugin-cli'].root
+const rootPath = pkgConfig.root
 
-export default async function build (name) {
-  const input = path.join(rootDir, `plugins/${name}/main.js`)
-  const file = path.join(projectDir, `build/plugins/${name}/${name}.js`)
+export default async function build(moduleName) {
+  const {
+    jsPath,
+    scssPath,
+    coreCssPath,
+    jsDistPath,
+    cssDistPath
+  } = getPluginsPath(moduleName)
+  const {
+    jsCachePath,
+    cssCachePath
+  } = getCachePath(moduleName)
 
-
-  const spinner = ora(chalk`{yellow Bundling...}`).start()
-
-  const jsBundle = await rollup.rollup({ input, ...inputOptions })
-    .then(
-      bundle => bundle.write({
-        file,
-        name: name === 'core' ? 'As' : name,
-        ...outputOptions
-      })
-    )
-    .then(res => spinner.succeed(chalk`{blue.bold Bundle complate!}`))
-    .catch(err => {
-      spinner.fail(chalk`{red.bold We got a error}`)
-      console.log(chalk`{bold ${err}}`)
-    })
-
-
-  const cssPath = path.join(rootDir, `plugins/${name}/css/${name}.scss`)
-
-  if (!fs.existsSync(cssPath)) {
-    return
-  }
-  const cssBundle = sass.renderSync({
-    file: cssPath,
-    outputStyle: 'nested',
-    includePaths: ['./plugins/core/css', 'node_modules']
-      .map((addr) => path.join(rootDir, addr))
+  const jsSpinner = new Ora({
+    text: chalk`{yellow Bundling scripts...}`
   })
-  const cssDir = path.join(projectDir, `build/plugins/${name}/css`)
-  if (!fs.existsSync(cssDir)) {
-    fs.mkdirSync(cssDir)
+  try {
+    jsSpinner.start()
+    const ruBundle = await rollup.rollup({ input: jsPath, ...inputOptions })
+    const { code: jsBundle } = await ruBundle.generate({ name: moduleName, ...outputOptions })
+    fs.writeFileSync(jsCachePath, jsBundle)
+    fs.writeFileSync(jsDistPath, jsBundle)
+    jsSpinner.succeed(chalk`{blue.bold ${moduleName}.js has bundling complate by rollup!}`)
+  } catch(err) {
+    console.log(chalk`{bold \n${err}}`)
+    return jsSpinner.fail(chalk`{red.bold We got a error}`)
   }
-  fs.writeFileSync(path.join(projectDir, `build/plugins/${name}/css/${name}.css`), cssBundle.css)
+
+  if (!fs.existsSync(scssPath)) {
+    return;
+  }
+
+  const cssSpinner = new Ora({
+    text: chalk`{yellow Bundling scss...}`
+  })
+  try {
+    const { css: cssBundle } = sass.renderSync({
+      file: scssPath,
+      outputStyle: 'nested',
+      includePaths: [coreCssPath, `${rootPath}/node_modules`]
+    })
+    fs.writeFileSync(cssCachePath, cssBundle)
+    fs.writeFileSync(cssDistPath, cssBundle)
+    cssSpinner.succeed(chalk`{blue.bold ${moduleName}.scss has bundling complate by node-sass!}`)
+  } catch(err) {
+    console.log(chalk`{bold ${err}}`)
+    return cssSpinner.fail(chalk`{red.bold We got a error}`)
+  }
+
+  return 1
 }

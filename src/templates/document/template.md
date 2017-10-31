@@ -1,51 +1,64 @@
 # {{Namespace}}
-
+> A flexible modern {{namespace}}  js plugin.
 ## Introduction
-> Just a plugin named {{namespace}} base on jQuery
 
-- Development: [{{namespace}}.js]()
-- Production: [{{namespace}}.min.js]()
-
-### [Demo]()
+#### [Demo]()
 ---
-## Installation
+### Installation
+
+#### NPM
+```javascript
+npm i @plugin/{{namespace}}
+```
+#### Yarn
+```javascript
+yarn add @plugin/{{namespace}}
+```
 
 ### Dependencies
 - jQuery
-- @plugins/core
+- @plugin/core
 
-### NPM
+---
 
-Install the module:
-
-```javascript
-npm i @plugins/{{namespace}}
-```
+## Getting Started
+### Include
+**Webpack && Rollup:**
 
 ES2015+
-
 ```javascript
-import "{{namespace}}"
+import {{namespace}} from "@plugin/{{namespace}}"
 ```
 
 CommonJS
-
 ```javascript
-require("{{namespace}}")
+require("@plugin/{{namespace}}")
 ```
 
-### HTML import:
-
+**CDN:**
+Development:
 ```html
-<link rel="stylesheet" href="/path/to/{{namespace}}.css">
-<script src="/path/to/jquery.js"></script>
 <script src="/path/to/{{namespace}}.js"></script>
+<link rel="stylesheet" href="/path/to/{{namespace}}.css">
 ```
----
-## Usage
+Production:
+```html
+<script src="/path/to/{{namespace}}.min.js"></script>
+<link rel="stylesheet" href="/path/to/{{namespace}}.min.css">
+```
 
+### Initialize
+HTML:
+```html
+<body>
+  <div class="element"></div>
+</body>
+```
+JS:
 ```javascript
-$('.element').as{{Namespace}}();
+Pj.{{Namespace}}('.element', options);
+// or jquery way
+$('.element').plugin('{{Namespace}}', options;
 ```
 ---
 ## API
@@ -57,7 +70,7 @@ You can also save the instances to variable for further use.
 
 **Example**
 ```javascript
-$('.element').as{{Namespace}}({
+$('.element').plugin('{{Namespace}}', {
   {{option}}: "foo"
 })
 ```
@@ -65,15 +78,15 @@ or use dataset
 ```html
 <div class="element" data-{{option}}="foo"></div>
 <script>
-  $('.element').as{{Namespace}}()
+  $('.element').plugin('{{Namespace}}')
 </script>
 ```
 
-Name | DefaultValue | Desc
+Name | Description | Default
 -----|--------------|-----
 {{#each options}}
 {{#with this}}
-`"{{name}}"` | `{{defaultValue}}` | {{desc}}
+`"{{name}}"` | {{desc}} | `{{defaultValue}}`
 {{/with}}
 {{/each}}
 {{/if}}
@@ -83,7 +96,7 @@ Name | DefaultValue | Desc
 Events are called on {{namespace}} instances through the {{namespace}} events itself.
 You can also save the instances to variable for further use.
 
-Name | Desc
+Name | Description
 -----|-----
 {{#each events}}
 {{#with this}}
@@ -93,7 +106,7 @@ Name | Desc
 
 **example:**
 ```javascript
-${{namespace}}.as{{Namespace}}({
+${{namespace}}.plugin('{{Namespace}}', {
   on{{Event}}: function() {
     // code...
   }
@@ -112,7 +125,7 @@ ${{namespace}}.on(
 Methods are called on {{namespace}} instances through the {{namespace}} method itself.
 You can also save the instances to variable for further use.
 
-Name | Desc
+Name | Description
 -----|-----
 {{#each methods}}
 {{#with this}}
@@ -122,15 +135,15 @@ Name | Desc
 
 **example:**
 ```javascript
-${{namespace}}.as{{Namespace}}({{method}})
-${{namespace}}.as{{Namespace}}({{method}}, "foo")
-${{namespace}}.as{{Namespace}}({{method}}, "foo", "bar")
+${{namespace}}.plugin('{{Namespace}}', {{method}})
+${{namespace}}.plugin('{{Namespace}}', {{method}}, "foo")
+${{namespace}}.plugin('{{Namespace}}', {{method}}, "foo", "bar")
 ```
 {{/if}}
 
 {{#if classes}}
 ### Classes:
-Name | Desc | Value
+Name | Description | Default
 -----|------|------
 {{#each classes}}
 {{#with this}}
@@ -160,25 +173,19 @@ Name | EN | ZH
 
 {{/if}}
 ---
+
 ## Browser support
 
 Tested on all major browsers.
 
-| <img src="https://raw.githubusercontent.com/alrra/browser-logos/master/safari/safari_32x32.png" alt="Safari"> | <img src="https://raw.githubusercontent.com/alrra/browser-logos/master/chrome/chrome_32x32.png" alt="Chrome"> | <img src="https://raw.githubusercontent.com/alrra/browser-logos/master/firefox/firefox_32x32.png" alt="Firefox"> | <img src="https://raw.githubusercontent.com/alrra/browser-logos/master/edge/edge_32x32.png" alt="Edge"> | <img src="https://raw.githubusercontent.com/alrra/browser-logos/master/internet-explorer/internet-explorer_32x32.png" alt="IE"> | <img src="https://raw.githubusercontent.com/alrra/browser-logos/master/opera/opera_32x32.png" alt="Opera"> |
+| <img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/safari/safari_32x32.png" alt="Safari"> | <img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/chrome/chrome_32x32.png" alt="Chrome"> | <img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/firefox/firefox_32x32.png" alt="Firefox"> | <img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/edge/edge_32x32.png" alt="Edge"> | <img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/internet-explorer/internet-explorer_32x32.png" alt="IE"> | <img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/opera/opera_32x32.png" alt="Opera"> |
 |:--:|:--:|:--:|:--:|:--:|:--:|
 | Latest ✓ | Latest ✓ | Latest ✓ | Latest ✓ | >=10 ✓ | Latest ✓ |
 
 As a jQuery plugin, you also need to see the [jQuery Browser Support](http://jquery.com/browser-support/).
 
 ## Contributing
-Anyone and everyone is welcome to contribute. Please take a moment to
-review the [guidelines for contributing](CONTRIBUTING.md). Make sure you're using the latest version of `@plugins/{{namespace}}` before submitting an issue. There are several ways to help out:
-
-* [Bug reports](CONTRIBUTING.md#bug-reports)
-* [Feature requests](CONTRIBUTING.md#feature-requests)
-* [Pull requests](CONTRIBUTING.md#pull-requests)
-* Write test cases for open bug issues
-* Contribute to the documentation
+See [Contribution.md](Contribution.md).
 
 ## Changelog
 To see the list of recent changes, see [Releases section](https://github.com/amazingSurge/plugins/releases).
