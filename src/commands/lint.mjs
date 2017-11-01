@@ -21,13 +21,9 @@ export default async function lint(moduleName, options) {
       return console.log('Cant find Module')
     }
     const changedList = commitAnalysis()
-    const result = await changedList.reduce(async (result, changed) => {
-      const resultSync = await result
-      const changedSync = await lint(changed)
-      return resultSync.concat(changedSync)
-    }, [])
+    const result = await Promise.all(changedList.map((changed) => lint(changed)))
     if (result.filter(Boolean).length) {
-      // pre-commit: which will make the commit fail as it returns the error code 1
+      // git hook: which will make the commit fail as it returns the error code 1
       console.log('exit 1')
       shelljs.exit(1)
     }
@@ -42,11 +38,7 @@ export default async function lint(moduleName, options) {
   const scssPathList = flatGlob.sync(Array.of(scssFormattedPath)).filter(isDistDir)
   const jsPathList = flatGlob.sync(Array.of(jsFormattedPath)).filter(isDistDir)
   const jsLintSatusCode = jsLint(jsPathList)
-  const cssLintResult = await cssLint(scssPathList).reduce(async(result, status) => {
-    const statusSync = await status
-    const resultSync = await result
-    return resultSync.concat(statusSync)
-  }, [])
+  const cssLintResult = await Promise.all(cssLint(scssPathList))
   const cssLintStatusCode = cssLintResult.filter(Boolean).length
   if (jsLintSatusCode) {
     console.log(`${moduleName} js part is checked failed`)
@@ -61,18 +53,15 @@ export default async function lint(moduleName, options) {
 
 function cssLint(cssPath) {
   const configFile = path.join(projectPath, 'src/config/stylelintrc.json')
-  const stylelintConfig = JSON.parse(
-    fs.readFileSync(configFile)
-  )
-  const result = cssPath.map((filePath) => {
-    const options = {
-      filePath,
-      stylelintConfig,
-      logLevel: 'info',
-      configBasedir: projectPath
-    }
-    return prettierStylelint
-      .format(options)
+  const stylelintConfig = JSON.parse(fs.readFileSync(configFile))
+  const options = {
+    stylelintConfig,
+    logLevel: 'info',
+    configBasedir: projectPath
+  }
+  return cssPath.map(
+    (filePath) => prettierStylelint
+      .format({ filePath, ...options })
       .then((formatted) => {
         fs.writeFileSync(filePath, formatted)
         return false
@@ -82,26 +71,21 @@ function cssLint(cssPath) {
         console.log(`${err}\n`)
         return filePath
       })
-    })
-  return result
+    )
 }
 
 function jsLint(jsPath) {
-  const eslintConfig = JSON.parse(
-    stripJsonComments(
-      fs.readFileSync(path.join(root, '.eslintrc.json'), 'utf8')
-    )
+  const eslintConfig = JSON.parse(stripJsonComments(fs
+    .readFileSync(path.join(root, '.eslintrc.json'), 'utf8'))
   )
-
+  const options = {
+    eslintConfig,
+    logLevel: 'info',
+    configBasedir: projectPath
+  }
   const result = jsPath.map((filePath) => {
-    const options = {
-      filePath,
-      eslintConfig,
-      logLevel: 'info',
-      configBasedir: projectPath
-    }
     try {
-      const formatted = prettierEslint(options)
+      const formatted = prettierEslint({ filePath, ...options })
       fs.writeFileSync(filePath, formatted)
       return false
     } catch(err) {
