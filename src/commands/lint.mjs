@@ -7,7 +7,7 @@ import flatGlob from 'glob-flat'
 import fs from 'fs'
 import stripJsonComments from 'strip-json-comments'
 import prettierEslint from 'prettier-eslint'
-import prettierStylelint from 'prettier-stylelint'
+import prettierStylelint from '../../packages/prettier-stylelint'
 import {
   getPluginsPath
 } from '../config/path'
@@ -18,7 +18,7 @@ const root = pkgConfig.root
 export default async function lint(moduleName, options) {
   if (!moduleName) {
     if (!options.beforeCommit) {
-      return console.log('Cant find module name')
+      return console.log('Cant find Module')
     }
     const changedList = commitAnalysis()
     const result = await changedList.reduce(async (result, changed) => {
@@ -38,9 +38,9 @@ export default async function lint(moduleName, options) {
     jsFormattedPath,
     scssFormattedPath
   } = getPluginsPath(moduleName)
-  const scssPathList = flatGlob.sync(Array.of(scssFormattedPath)).filter((filePath) => !/dist/g.test(filePath))
-  const jsPathList = flatGlob.sync(Array.of(jsFormattedPath)).filter((filePath) => !/dist/g.test(filePath))
-
+  const isDistDir = (filePath) => !(/dist/g.test(filePath))
+  const scssPathList = flatGlob.sync(Array.of(scssFormattedPath)).filter(isDistDir)
+  const jsPathList = flatGlob.sync(Array.of(jsFormattedPath)).filter(isDistDir)
   const jsLintSatusCode = jsLint(jsPathList)
   const cssLintResult = await cssLint(scssPathList).reduce(async(result, status) => {
     const statusSync = await status
@@ -60,25 +60,23 @@ export default async function lint(moduleName, options) {
 }
 
 function cssLint(cssPath) {
+  const configFile = path.join(projectPath, 'src/config/stylelintrc.json')
   const stylelintConfig = JSON.parse(
-    fs.readFileSync(path.join(root, '.stylelintrc'))
+    fs.readFileSync(configFile)
   )
   const result = cssPath.map((filePath) => {
     const options = {
       filePath,
-      stylelintConfig: { configBasedir: projectPath, ...stylelintConfig },
-      configBasedir: projectPath,
-      prettierOptions: {
-        // hack prettier-stylelint warn: Warning: `parser` with value "postcss" is deprecated. Use "css", "less" or "scss" instead.
-        get parser() {
-          return 'scss'
-        },
-        set parser(v) {}
-      },
-      logLevel: 'info'
+      stylelintConfig,
+      logLevel: 'info',
+      configBasedir: projectPath
     }
-    return prettierStylelint.format(options)
-      .then((formatted) => fs.writeFileSync(filePath, formatted))
+    return prettierStylelint
+      .format(options)
+      .then((formatted) => {
+        fs.writeFileSync(filePath, formatted)
+        return false
+      })
       .catch((err) => {
         console.log(`\nFilePath: ${filePath}`)
         console.log(`${err}\n`)

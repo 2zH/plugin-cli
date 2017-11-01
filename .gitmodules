@@ -1,0 +1,3 @@
+[submodule "packages/prettier-stylelint"]
+	path = packages/prettier-stylelint
+	url = https://github.com/2zH/prettier-stylelint.git
