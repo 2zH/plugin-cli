@@ -4019,6 +4019,10 @@ mkdirp@0.5.1, mkdirp@0.5.x, "mkdirp@>=0.5 0", mkdirp@^0.5.0, mkdirp@^0.5.1, mkdi
   dependencies:
     minimist "0.0.8"
 
+mocha-jsdom@^1.1.0:
+  version "1.1.0"
+  resolved "http://registry.npm.taobao.org/mocha-jsdom/download/mocha-jsdom-1.1.0.tgz#e1576fbd0601cc89d358a213a0e5585d1b7c7a01"
+
 mocha@^4.0.1:
   version "4.0.1"
   resolved "http://registry.npm.taobao.org/mocha/download/mocha-4.0.1.tgz#0aee5a95cf69a4618820f5e51fa31717117daf1b"
@@ -4921,9 +4925,9 @@ prettier-eslint@^8.2.1:
     typescript "^2.5.1"
     typescript-eslint-parser "^8.0.0"
 
-prettier-stylelint@^0.4.2:
+"prettier-stylelint@https://github.com/2zH/prettier-stylelint":
   version "0.4.2"
-  resolved "http://registry.npm.taobao.org/prettier-stylelint/download/prettier-stylelint-0.4.2.tgz#62845e342f786218b008da69eef14f0a5c05bcfb"
+  resolved "https://github.com/2zH/prettier-stylelint#3cbaa6e046956167bd0c89f0b757e19df6f6e574"
   dependencies:
     cosmiconfig "^3.0.1"
     debug "^3.0.1"
@@ -4933,14 +4937,14 @@ prettier-stylelint@^0.4.2:
     import-local "^0.1.1"
     meow "^3.7.0"
     pify "^3.0.0"
-    prettier "^1.7.0"
+    prettier "^1.7.4"
     resolve-from "^4.0.0"
     stylelint "^8.1.1"
     temp-write "^3.3.0"
     tempy "^0.2.1"
     update-notifier "^2.2.0"
 
-prettier@^1.7.0, prettier@^1.7.1:
+prettier@^1.7.1, prettier@^1.7.4:
   version "1.7.4"
   resolved "http://registry.npm.taobao.org/prettier/download/prettier-1.7.4.tgz#5e8624ae9363c80f95ec644584ecdf55d74f93fa"
 

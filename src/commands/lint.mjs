@@ -7,7 +7,7 @@ import globby from 'globby'
 import fs from 'fs'
 import stripJsonComments from 'strip-json-comments'
 import prettierEslint from 'prettier-eslint'
-import prettierStylelint from '../../packages/prettier-stylelint'
+import prettierStylelint from 'prettier-stylelint'
 import {
   getPluginsPath
 } from '../config/path'

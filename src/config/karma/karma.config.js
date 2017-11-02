@@ -1,6 +1,9 @@
 const path = require('path')
 const webpack = require('webpack')
-const webpackRules = require('@std/esm')(module)('../webpack/webpack.rules.mjs').default
+const { presets, plugins } = require('@std/esm')(module)('../common/babelOpts.mjs')
+const resolveFrom = require('resolve-from')
+const nodePath = path.join(__dirname, '../../../node_modules')
+console.log(nodePath)
 
 module.exports = function(config) {
   config.set({
@@ -88,7 +91,43 @@ module.exports = function(config) {
     ],
     webpack: {
       module: {
-        rules: webpackRules
+        rules: [
+          {
+            test: /\.js$/,
+            exclude: /node_modules/,
+            use: {
+              loader: 'babel-loader',
+              options: {
+                presets: [
+                  [resolveFrom(nodePath, 'babel-preset-env'), {
+                    modules: false,
+                    target: {
+                      browser: [
+                        'Chrome >= 52',
+                        'FireFox >= 44',
+                        'Safari >= 7',
+                        'Explorer 11',
+                        'last 4 Edge versions'
+                      ]
+                    },
+                    useBuiltIns: false
+                  }]
+                ],
+                plugins: [
+                  resolveFrom(nodePath, 'babel-plugin-transform-decorators-legacy'),
+                  resolveFrom(nodePath, 'babel-plugin-transform-class-properties'),
+                  resolveFrom(nodePath, 'babel-plugin-transform-object-rest-spread')
+                ]
+              }
+            }
+          }
+        ]
+      },
+      resolve: {
+        modules: [nodePath, 'node_modules']
+      },
+      resolveLoader: {
+        modules: [nodePath, 'node_modules']
       }
     },
     webpackMiddleware: {

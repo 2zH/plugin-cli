@@ -9,6 +9,7 @@ import karma from 'karma';
 import fs from 'fs'
 import path from 'path'
 import puppeteer from 'puppeteer'
+import WebpackRule from '../config/webpack/webpack.rules'
 
 const rootPath = pkgConfig.root
 
@@ -20,12 +21,11 @@ export default function test(name) {
       testPath,
       'node_modules/jquery/dist/jquery.js'
     ],
-    basePath: projectPath,
+    basePath: rootPath,
     singleRun: true,
     reporters: ['mocha']
   }
   process.env.CHROME_BIN = puppeteer.executablePath()
-  console.log(puppeteer.executablePath())
   const KarmaServer = new karma.Server(options)
   KarmaServer.start()
 }
