@@ -3,7 +3,7 @@ import {
   projectPath
 } from '../../../lib'
 import webfontsGenerator from 'webfonts-generator'
-import flatGold from 'glob-flat'
+import globby from 'globby'
 import path from 'path'
 
 export default async function icons() {
@@ -13,7 +13,7 @@ export default async function icons() {
   
   webfontsGenerator({
     fontName: 'icons',
-    files: flatGold.sync([src]),
+    files: globby.sync([src]),
     dest: path.join(projectPath, './build/icons')
   })
 }

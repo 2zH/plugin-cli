@@ -20,11 +20,12 @@ export default function test(name) {
       testPath,
       'node_modules/jquery/dist/jquery.js'
     ],
-    basePath: rootPath,
+    basePath: projectPath,
     singleRun: true,
     reporters: ['mocha']
   }
   process.env.CHROME_BIN = puppeteer.executablePath()
+  console.log(puppeteer.executablePath())
   const KarmaServer = new karma.Server(options)
   KarmaServer.start()
 }

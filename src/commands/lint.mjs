@@ -3,7 +3,7 @@ import {
   projectPath
 } from '../../lib'
 import path from 'path'
-import flatGlob from 'glob-flat'
+import globby from 'globby'
 import fs from 'fs'
 import stripJsonComments from 'strip-json-comments'
 import prettierEslint from 'prettier-eslint'
@@ -14,7 +14,7 @@ import {
 import commitAnalysis from './commit-analysis'
 import shelljs from 'shelljs'
 
-const root = pkgConfig.root
+const rootPath = pkgConfig.root
 export default async function lint(moduleName, options) {
   if (!moduleName) {
     if (!options.beforeCommit) {
@@ -35,8 +35,8 @@ export default async function lint(moduleName, options) {
     scssFormattedPath
   } = getPluginsPath(moduleName)
   const isDistDir = (filePath) => !(/dist/g.test(filePath))
-  const scssPathList = flatGlob.sync(Array.of(scssFormattedPath)).filter(isDistDir)
-  const jsPathList = flatGlob.sync(Array.of(jsFormattedPath)).filter(isDistDir)
+  const scssPathList = globby.sync(Array.of(scssFormattedPath)).filter(isDistDir)
+  const jsPathList = globby.sync(Array.of(jsFormattedPath)).filter(isDistDir)
   const jsLintSatusCode = jsLint(jsPathList)
   const cssLintResult = await Promise.all(cssLint(scssPathList))
   const cssLintStatusCode = cssLintResult.filter(Boolean).length
@@ -52,8 +52,8 @@ export default async function lint(moduleName, options) {
 }
 
 function cssLint(cssPath) {
-  const configFile = path.join(projectPath, 'src/config/stylelintrc.json')
-  const stylelintConfig = JSON.parse(fs.readFileSync(configFile))
+  const configFile = path.join(rootPath, '.stylelintrc.json')
+  const stylelintConfig = JSON.parse(fs.readFileSync(configFile, 'utf8'))
   const options = {
     stylelintConfig,
     logLevel: 'info',
@@ -75,9 +75,8 @@ function cssLint(cssPath) {
 }
 
 function jsLint(jsPath) {
-  const eslintConfig = JSON.parse(stripJsonComments(fs
-    .readFileSync(path.join(root, '.eslintrc.json'), 'utf8'))
-  )
+  const configFile = path.join(rootPath, '.eslintrc.json')
+  const eslintConfig = JSON.parse(stripJsonComments(fs.readFileSync(configFile, 'utf8')))
   const options = {
     eslintConfig,
     logLevel: 'info',

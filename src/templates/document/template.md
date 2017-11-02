@@ -1,5 +1,5 @@
 # {{Namespace}}
-> A flexible modern {{namespace}}  js plugin.
+> A flexible modern {{namespace}} js plugin.
 ## Introduction
 
 #### [Demo]()

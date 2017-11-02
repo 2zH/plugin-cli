@@ -11,7 +11,8 @@ import {
   fork,
   props,
   upperFirstWord,
-  pkgConfig
+  pkgConfig,
+  fixDir
 } from '../../lib'
 import {
   defaultEvents,
@@ -30,7 +31,6 @@ import stripJsonComments from 'strip-json-comments'
 import prettierEslint from 'prettier-eslint'
 
 const entry = path.join(projectPath, 'src/templates/document/template.md')
-
 const log = (v) => {
   console.log(v)
   return v
@@ -40,7 +40,6 @@ const transpiler = (answers) => Object.entries(answers)
     { name: k, desc: v }
   ))
 const openQuestionsThenTranspiler = openQuestions.map(transpiler)
-
 const makePrompt = (items) => items.map(
   item => ({
     type: 'input',
@@ -126,13 +125,16 @@ export default async function docs(moduleName, { update }) {
       name: 'constant',
       message: '🔧 Please type where is constant ?'
     }])
-  const { docPath, constantPath } = getPluginsPath(moduleName)
-  const { docJsCachePath } = getCachePath(moduleName)
+  const { docPath, constantPath, modulePath } = getPluginsPath(moduleName)
+  const docJsCachePath = fixDir(`${modulePath}/.plugin-cache/docs/${moduleName}.js`)
+  console.log(docJsCachePath)
   const documentBuild = compilerThenWrite(entry, docPath)
+
   if (update) {
-    return import(docJsCachePath)
-      .then((meta) => documentBuild(meta.default))
+    const docCache = await readContent.fork(docJsCachePath)
+    return documentBuild(docCache.default)
   }
+
   const constant = await readContent.fork(constantPath)
   const { namespace, info: { version }, ...api } = constant
 

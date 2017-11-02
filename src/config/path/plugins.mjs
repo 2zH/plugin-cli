@@ -1,15 +1,21 @@
 export default function plugins(rootPath, moduleName) {
-  return {
-    scssPath: `${rootPath}/plugins/${moduleName}/css/${moduleName}.scss`,
-    hbsPath: `${rootPath}/plugins/${moduleName}/html/${moduleName}.hbs`,
-    jsPath: `${rootPath}/plugins/${moduleName}/main.js`,
+  const modulePath = `${rootPath}/plugins/${moduleName}`
+  const moduleDistPath = `${rootPath}/_dev/plugins/${moduleName}`
+  const config = {
+    modulePath,
+    moduleDistPath,
+    scssPath: `${modulePath}/css/${moduleName}.scss`,
+    hbsPath: `${modulePath}/html/${moduleName}.hbs`,
+    jsPath: `${modulePath}/main.js`,
     coreCssPath: `${rootPath}/plugins/core/css`,
-    constantPath: `${rootPath}/plugins/${moduleName}/js/constant.js`,
-    docPath: `${rootPath}/plugins/${moduleName}/README.md`,
-    cssDistPath: `${rootPath}/_dev/plugins/${moduleName}/css/${moduleName}.css`,
-    jsDistPath: `${rootPath}/_dev/plugins/${moduleName}/${moduleName}.js`,
-    testPath: `${rootPath}/plugins/${moduleName}/test/**/*.js`,
-    jsFormattedPath: `${rootPath}/plugins/${moduleName}/**/*.js`,
-    scssFormattedPath: `${rootPath}/plugins/${moduleName}/**/*.scss`
+    constantPath: `${modulePath}/js/constant.js`,
+    docPath: `${modulePath}/README.md`,
+    cssDistPath: `${moduleDistPath}/css/${moduleName}.css`,
+    jsDistPath: `${moduleDistPath}/${moduleName}.js`,
+    testPath: `${modulePath}/test/**/*.js`,
+    jsFormattedPath: `${modulePath}/**/*.js`,
+    scssFormattedPath: `${modulePath}/**/*.scss`
   }
+
+  return config
 }
