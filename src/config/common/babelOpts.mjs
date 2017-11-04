@@ -1,5 +1,10 @@
+import resolveFrom from 'resolve-from'
+import {
+  projectPath
+} from '../../../lib'
+
 export const presets = [
-  ['env', {
+  [resolveFrom(projectPath, 'babel-preset-env'), {
     modules: false,
     target: {
       browser: [
@@ -15,7 +20,7 @@ export const presets = [
 ]
 
 export const plugins = [
-  'transform-decorators-legacy',
-  'transform-object-rest-spread',
-  'transform-class-properties'
-]
+  'babel-plugin-transform-decorators-legacy',
+  'babel-plugin-transform-object-rest-spread',
+  'babel-plugin-transform-class-properties'
+].map((babelPlugin) => resolveFrom(projectPath, babelPlugin))
