@@ -36,11 +36,10 @@ export default function config(command, key, value) {
       value = value && path.resolve(value)
     }
 
-    writer({
+    return writer({
       ...commandLineMeta,
       [key]: value || ''
     })
-    return dependencies()
   }
 
   return console.log('command is invalid')

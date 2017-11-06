@@ -1,7 +1,7 @@
 import build from './build'
 import config from './config'
 import docs from './docs'
-import watch from './watch'
+import run from './run'
 import dependencies from './dependencies'
 import lint from './lint'
 import test from './test'
@@ -11,7 +11,7 @@ export {
   docs,
   config,
   build,
-  watch,
+  run,
   dependencies,
   lint,
   test,

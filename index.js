@@ -5,12 +5,24 @@ const {
   docs,
   config,
   build,
-  watch,
+  run,
   dependencies,
   lint,
   test,
   commitAnalysis
 } = require_esm('./src/commands')
+const fs = require('fs')
+const path = require('path')
+
+const dependenDir = path.join(__dirname, 'build/vendor')
+const hasDependencies = () => {
+  if (fs.existsSync(dependenDir)
+    && Boolean(fs.readdirSync(dependenDir).length)
+  ) {
+    return;
+  }
+  return dependencies()
+}
 
 program
   .version('0.0.1')
@@ -31,16 +43,22 @@ program
 program
   .command('build [name]')
   .description('build plugin')
-  .option('-cr, --core-rebuild', 'rebuild @plugin/core part')
-  .option('-dr, --dependencies-rebuild', 'rebuild dependices')
-  .action(build)
+  .option('-c, --core-rebuild', 'rebuild @plugin/core part')
+  .option('-d, --dependencies-rebuild', 'rebuild dependices')
+  .action(async(name, options) => {
+    await hasDependencies()
+    build(name, options)
+  })
 
 program
-  .command('watch [name]')
-  .description('watch plugin')
-  .option('-cr, --core-rebuild', 'rebuild @plugin/core part')
-  .option('-dr, --dependencies-rebuild', 'rebuild dependices')
-  .action(watch)
+  .command('run [name]')
+  .description('run plugin')
+  .option('-c, --core-rebuild', 'rebuild @plugin/core part')
+  .option('-d, --dependencies-rebuild', 'rebuild dependices')
+  .action(async(name, options) => {
+    await hasDependencies()
+    run(name, options)
+  })
 
 program
   .command('dependencies')

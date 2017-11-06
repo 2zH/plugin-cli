@@ -1,19 +1,22 @@
+import {
+  getPluginsPath
+} from '../config/path'
+import {
+  readContent,
+  projectPath
+} from '../../lib'
 import config from '../config/webpack/webpack.config'
 import WebpackDevServer from 'webpack-dev-server'
 import Webpack from 'webpack'
 import chalk from 'chalk'
 import opn from 'opn'
 import build from './build'
-import {
-  getPluginsPath
-} from '../config/path'
-import {
-  readContent
-} from '../../lib'
 import commonLibrary from '../config/common/externals'
+import fs from 'fs'
+import path from 'path'
 
-export default async function watch (moduleName, options) {
-  if (options.dependenciesRebuild) {
+export default async function run (moduleName, options) {
+  if (options.dependenciesRebuild || !fs.existsSync(path.join(projectPath, 'build/plugins'))) {
     const { constantPath } = getPluginsPath(moduleName)
     const { dependencies = [] } = await readContent.fork(constantPath)
     console.log('Building dependencies...\n')

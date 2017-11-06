@@ -1,28 +1,25 @@
-import AssetsManager from 'assets-manager'
-import path from 'path'
 import {
   projectPath,
   pkgConfig,
   fixDir
 } from '../../lib'
-import sass from 'node-sass'
-import shelljs from 'shelljs'
-import fs from 'fs'
 import {
   getPluginsPath
 } from '../config/path'
-import icon from '../dependencies/icons'
+import AssetsManager from 'assets-manager'
+import path from 'path'
+import sass from 'node-sass'
+import shelljs from 'shelljs'
+import fs from 'fs'
+import webfontsGenerator from 'webfonts-generator'
+import globby from 'globby'
 
 const rootPath = pkgConfig.root
-
-export default async function makeDependencies() {
-  makeScripts()
-  makeScss()
-  makeAssets()
-  icon()
+export default function buildDependencies() {
+  return Promise.all(buildScripts(), buildScss(), buildIcons(), buildAssets())
 }
 
-function makeAssets() {
+function buildAssets() {
   const manifest = path.join(projectPath, 'src/config/assets-manager.json')
   console.log(manifest)
   const manager = new AssetsManager(manifest, {
@@ -37,19 +34,17 @@ function makeAssets() {
       js: '${dest}/vendor/${file}'
     }
   })
-  manager.copyPackages().then(() => {
-    console.log('Process successed!');
-  });
+  return manager.copyPackages().then(() => console.log('Assets building success.'));
 }
 
-function makeScripts() {
+function buildScripts() {
   const input = path.join(rootPath, 'src/js/scripts.js')
   const outPut = path.join(projectPath, 'build/js/scripts.js')
   fixDir(outPut)
-  shelljs.cp(input, outPut)
+  return shelljs.cp(input, outPut)
 }
 
-function makeScss() {
+function buildScss() {
   const { css: cssBundle } = sass.renderSync({
     file: path.join(rootPath, 'src/scss/styles.scss'),
     outputStyle: 'nested',
@@ -61,5 +56,17 @@ function makeScss() {
   })
   const outPut = path.join(projectPath, 'build/css/styles.css')
   fixDir(outPut)
-  fs.writeFileSync(outPut, cssBundle)
+  return fs.writeFileSync(outPut, cssBundle)
+}
+
+function buildIcons() {
+  const rootPath = pkgConfig.root
+  const src = path.join(rootPath, 'src/icons/svg/*.svg')
+  const destPath = path.join(projectPath, './build/icons')
+  
+  return webfontsGenerator({
+    fontName: 'icons',
+    files: globby.sync([src]),
+    dest: path.join(projectPath, './build/icons')
+  })
 }
