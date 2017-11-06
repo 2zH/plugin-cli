@@ -1,7 +1,7 @@
-import meta from '../../package.json'
 import {
   projectPath
 } from '../../lib'
+import meta from '../../package.json'
 import fs from 'fs'
 import path from 'path'
 import dependencies from './dependencies'
