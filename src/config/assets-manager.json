@@ -13,13 +13,9 @@
     "npm:jquery-validation": {
       "js": "dist/jquery.validate.min.js"
     },
-    "npm:animate.css": {
-      "css": ["animate.min.css"]
-    },
     "npm:hammerjs": {
       "js": ["hammer.min.js", "hammer.min.js.map"]
     },
-    "npm:holderjs": true,
     "npm:font-awesome": {
       "css": "css/*.min.css",
       "fonts": [
@@ -35,9 +31,6 @@
       "css":[
         "dist/css/tether.min.css"
       ]
-    },
-    "npm:object-fit-images":{
-      "js":"dist/ofi.min.js"
     },
     "npm:webfontloader":{
       "js":"webfontloader.js"

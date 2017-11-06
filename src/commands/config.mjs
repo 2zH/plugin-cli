@@ -4,6 +4,7 @@ import {
 } from '../../lib'
 import fs from 'fs'
 import path from 'path'
+import dependencies from './dependencies'
 
 const writer = (commandLineMeta) => {
   return fs.writeFileSync(
@@ -18,7 +19,6 @@ const writer = (commandLineMeta) => {
 const commandLineMeta = meta['plugin-cli']
 
 export default function config(command, key, value) {
-  
   if (command === 'get') {
     if (!key) {
       return console.log('[key] is not empty')
@@ -36,10 +36,11 @@ export default function config(command, key, value) {
       value = value && path.resolve(value)
     }
 
-    return writer({
+    writer({
       ...commandLineMeta,
       [key]: value || ''
     })
+    return dependencies()
   }
 
   return console.log('command is invalid')

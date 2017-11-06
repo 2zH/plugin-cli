@@ -11,6 +11,7 @@ import fs from 'fs'
 import {
   getPluginsPath
 } from '../config/path'
+import icon from '../dependencies/icons'
 
 const rootPath = pkgConfig.root
 
@@ -18,10 +19,12 @@ export default async function makeDependencies() {
   makeScripts()
   makeScss()
   makeAssets()
+  icon()
 }
 
 function makeAssets() {
   const manifest = path.join(projectPath, 'src/config/assets-manager.json')
+  console.log(manifest)
   const manager = new AssetsManager(manifest, {
     cwd: rootPath,
     registries: {
