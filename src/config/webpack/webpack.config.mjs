@@ -89,7 +89,10 @@ export default function config(name) {
       modules: ['node_modules', path.join(rootPath, 'node_modules')]
     },
     resolveLoader: {
-      modules: ['node_modules', 'packages']
+      modules: ['node_modules', 'packages'],
+      alias: {
+        'assemble-loader': path.join(projectPath, 'packages/assemble-loader')
+      }
     },
     plugins
   }
