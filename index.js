@@ -45,6 +45,7 @@ program
   .description('build plugin')
   .option('-c, --core-rebuild', 'rebuild @plugin/core part')
   .option('-d, --dependencies-rebuild', 'rebuild dependices')
+  .option('-e, --es, build es bundle')
   .action(async(name, options) => {
     await hasDependencies()
     build(name, options)
@@ -74,6 +75,7 @@ program
 program
   .command('test [name]')
   .description('run unit test')
+  .option('-b, --build-test', 'build test file')
   .action(test)
 
 program

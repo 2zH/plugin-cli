@@ -3,7 +3,11 @@ import {
 } from '../config/path'
 import {
   pkgConfig,
-  projectPath
+  projectPath,
+  readContent,
+  upperFirstWord,
+  compilerThenWrite,
+  fixDir
 } from '../../lib'
 import karma from 'karma';
 import fs from 'fs'
@@ -13,9 +17,12 @@ import webpackRule from '../config/webpack/webpack.rules'
 
 const rootPath = pkgConfig.root
 const nodePath = path.join(projectPath, 'node_modules')
-export default function test(name) {
+export default async function test(name, options) {
+  if (options.buildTest) {
+    await buildTest(name)
+  }
   const { testPath } = getPluginsPath(name)
-  const options = {
+  const karmaOptions = {
     configFile: path.join(projectPath, `src/config/karma/karma.config.js`),
     files: [
       testPath,
@@ -37,6 +44,25 @@ export default function test(name) {
     }
   }
   process.env.CHROME_BIN = puppeteer.executablePath()
-  const KarmaServer = new karma.Server(options)
+  const KarmaServer = new karma.Server(karmaOptions)
   KarmaServer.start()
+}
+
+async function buildTest(name) {
+  const { constantPath, modulePath } = getPluginsPath(name)
+  const { methods, classes, events} = await readContent.fork(constantPath)
+  const compileOptions = {
+    namespace: name,
+    Namespace: upperFirstWord(name),
+    methods: Boolean(methods),
+    classes: Boolean(classes),
+    events: Boolean(events),
+  }
+  const input = path.join(projectPath, 'src/templates/test/plugin.spec.js')
+  const outPut = path.join(modulePath, `test/unit/${name}.spec.js`)
+  if (fs.existsSync(outPut)) {
+    fs.copyFileSync(outPut, fixDir(path.join(modulePath, `.plugin-cache/${name}.spec.bak.js`)))
+  }
+  const compiler = compilerThenWrite(input, outPut)
+  return compiler(compileOptions)
 }

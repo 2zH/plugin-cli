@@ -18,7 +18,7 @@ import {
 
 const rootPath = pkgConfig.root
 
-export default async function build(moduleName) {
+export default async function build(moduleName, options) {
   const {
     jsPath,
     scssPath,
@@ -37,7 +37,11 @@ export default async function build(moduleName) {
   try {
     jsSpinner.start()
     const ruBundle = await rollup.rollup({ input: jsPath, ...inputOptions })
-    const { code: jsBundle } = await ruBundle.generate({ name: moduleName, ...outputOptions })
+    const { code: jsBundle } = await ruBundle.generate({
+      name: moduleName,
+      format: options.es ? 'es' : 'umd',
+      ...outputOptions
+    })
     fs.writeFileSync(jsCachePath, jsBundle)
     fs.writeFileSync(jsDistPath, jsBundle)
     jsSpinner.succeed(chalk`{blue.bold ${moduleName}.js has bundling complate by rollup!}`)
