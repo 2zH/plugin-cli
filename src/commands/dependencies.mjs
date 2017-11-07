@@ -16,7 +16,7 @@ import globby from 'globby'
 
 const rootPath = pkgConfig.root
 export default function buildDependencies() {
-  return Promise.all(buildScripts(), buildScss(), buildIcons(), buildAssets())
+  return Promise.all([buildScripts(), buildScss(), buildIcons(), buildAssets()])
 }
 
 function buildAssets() {

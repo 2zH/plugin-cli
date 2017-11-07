@@ -66,3 +66,4 @@ constant.js
 # build directory
 build
 vendor
+unstable-handlebars-wax-loader
