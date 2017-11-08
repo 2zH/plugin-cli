@@ -52,13 +52,21 @@ Update doc by cache and template
 ```sh
 plugin docs table-sort --update
 ```
+
+
 ## Test:
 Run Unit-Test.
 
 **example:**
 ```sh
-plugin run utils
+plugin test utils
 ```
+### `-b, --build-test`
+**example:**
+```sh
+plugin test table-sort --build-test
+```
+
 
 ## Run:
 Run plugin.
@@ -68,21 +76,37 @@ Run plugin.
 plugin run table-sort
 ```
 ### `-d, --dependencies-rebuild`
+Rebuild all dependencies
+
 **example:**
 ```sh
 plugin run table-sort --dependencies-rebuild
 ```
 ### `-c, --core-rebuild`
+Rebuild core
+
 **example:**
 ```sh
 plugin run table-sort --core-rebuild
 ```
+
+
 ## Build:
 Bundle plugin
+
 **example:**
 ```sh
 plugin build core
 ```
+### `-e, --es`
+ES format
+
+**example:**
+```sh
+plugin build core --es
+```
+
+
 ## Dependencies
 Building dependencies.(assets, icon, common css, js)
 
@@ -90,6 +114,8 @@ Building dependencies.(assets, icon, common css, js)
 ```sh
 plugin dependencies
 ```
+
+
 ## Commit analysis
 Analysis what plugin will be commit from git.
 
