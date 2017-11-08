@@ -33,7 +33,7 @@ export default async function run (moduleName, options) {
   WebpackDevServer.addDevServerEntrypoints(webpackConfig, devOps)
   const compiler = Webpack(webpackConfig)
   const devServer = new WebpackDevServer(compiler, devOps)
-  devServer.listen(8080, '127.0.0.1', () => {
+  devServer.listen(8080, '0.0.0.0', () => {
     console.log(chalk`{yellow Starting server on http://localhost:8080}`)
     opn('http://localhost:8080')
   })

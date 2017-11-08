@@ -18,7 +18,7 @@ import {
 
 const rootPath = pkgConfig.root
 
-export default async function build(moduleName, options) {
+export default async function build(moduleName, options = {}) {
   const {
     jsPath,
     scssPath,
