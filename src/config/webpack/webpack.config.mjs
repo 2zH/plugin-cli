@@ -27,7 +27,7 @@ export default function config(name) {
     filename: `plugins/${name}/${name}.js`,
     path: path.join(projectPath, './build'),
     publicPath: '/',
-    library: name,
+    library: `@plugin/${name}`,
     libraryTarget: 'umd'
   }
   const cssRule = {

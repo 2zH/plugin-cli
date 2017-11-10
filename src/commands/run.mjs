@@ -41,7 +41,9 @@ export default async function run (moduleName, options) {
 
 async function buildDependencies(moduleName) {
   const { constantPath } = getPluginsPath(moduleName)
-  console.log(constantPath)
+  if (!fs.existsSync(constantPath)) {
+    return;
+  }
   const { dependencies = [] } = await readContent.fork(constantPath)
   console.log('Building dependencies...\n')
   await dependencies

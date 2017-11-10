@@ -50,7 +50,7 @@ export default async function test(name, options) {
 
 async function buildTest(name) {
   const { constantPath, modulePath } = getPluginsPath(name)
-  const { methods, classes, events} = await readContent.fork(constantPath)
+  const { methods, classes, events } = await readContent.fork(constantPath)
   const compileOptions = {
     namespace: name,
     Namespace: upperFirstWord(name),
