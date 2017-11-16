@@ -5,6 +5,7 @@ import meta from '../../package.json'
 import fs from 'fs'
 import path from 'path'
 import dependencies from './dependencies'
+import sh from 'shelljs'
 
 const writer = (commandLineMeta) => {
   return fs.writeFileSync(
@@ -34,6 +35,7 @@ export default function config(command, key, value) {
 
     if (key === 'root') {
       value = value && path.resolve(value)
+      sh.exec(`npm config set pluginjs_root ${value}`, { silent: true })
     }
 
     return writer({

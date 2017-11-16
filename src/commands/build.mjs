@@ -36,11 +36,16 @@ export default async function build(moduleName, options = {}) {
   })
   try {
     jsSpinner.start()
-    const ruBundle = await rollup.rollup({ input: jsPath, ...inputOptions })
+    const { external, ...inputOptionsStandlone } = inputOptions
+    const ruBundle = await rollup.rollup({
+      input: jsPath, 
+      ...(options.standlone ? inputOptionsStandlone : inputOptions)
+    })
+    const { globals, ...outputOptionsStandlone } = outputOptions
     const { code: jsBundle } = await ruBundle.generate({
-      name: moduleName,
+      name: `@plugin/${moduleName}`,
       format: options.es ? 'es' : 'umd',
-      ...outputOptions
+      ...(options.standlone ? outputOptionsStandlone : outputOptions)
     })
     fs.writeFileSync(jsCachePath, jsBundle)
     fs.writeFileSync(jsDistPath, jsBundle)

@@ -12,6 +12,7 @@ import rules from './webpack.rules'
 import externals from '../common/externals'
 import HtmlWebpackPlugin from 'html-webpack-plugin'
 import ExtractTextPlugin from 'extract-text-webpack-plugin'
+import CopyWebpackPlugin from 'copy-webpack-plugin'
 
 const rootPath = pkgConfig.root
 export default function config(name) {
@@ -19,7 +20,8 @@ export default function config(name) {
     jsPath,
     scssPath,
     hbsPath,
-    coreCssPath
+    coreCssPath,
+    modulePath
   } = getPluginsPath(name)
   const cssIsExists = fs.existsSync(scssPath)
   const entry = cssIsExists ? [jsPath, scssPath, hbsPath] : [jsPath, hbsPath]
@@ -71,13 +73,18 @@ export default function config(name) {
       htmlRule
     ])
   }
+  console.log(path.join(modulePath, 'src/assets'))
   const plugins = [
     new Webpack.HotModuleReplacementPlugin(),
     new ExtractTextPlugin(`plugins/${name}/css/${name}.css`),
     new HtmlWebpackPlugin({
       template: hbsPath,
       inject: false
-    })
+    }),
+    new CopyWebpackPlugin([{
+      from: path.join(modulePath, 'src/assets'),
+      to: `plugins/${name}/assets`
+    }])
   ]
   const webpackConfig = {
     entry,

@@ -46,6 +46,7 @@ program
   .option('-c, --core-rebuild', 'rebuild @plugin/core part')
   .option('-d, --dependencies-rebuild', 'rebuild dependices')
   .option('-e, --es, build es bundle')
+  .option('-s, --standlone')
   .action(async(name, options) => {
     await hasDependencies()
     build(name, options)
