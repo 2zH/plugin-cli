@@ -16,12 +16,12 @@ import globby from 'globby'
 
 const rootPath = pkgConfig.root
 export default function buildDependencies() {
-  return Promise.all([buildScripts(), buildScss(), buildIcons(), buildAssets()])
+  return buildIcons()
+    .then(() => Promise.all([buildScripts(), buildScss(), buildAssets()]))
 }
 
 function buildAssets() {
   const manifest = path.join(projectPath, 'src/config/assets-manager.json')
-  console.log(manifest)
   const manager = new AssetsManager(manifest, {
     cwd: rootPath,
     registries: {
@@ -45,7 +45,7 @@ function buildScripts() {
 }
 
 function buildScss() {
-  const { css: cssBundle } = sass.renderSync({
+  const cssBundle = sass.renderSync({
     file: path.join(rootPath, 'src/scss/styles.scss'),
     outputStyle: 'nested',
     includePaths: [
@@ -54,6 +54,12 @@ function buildScss() {
       // coreCssPath
     ]
   })
+  .css
+  .toString()
+  .replace(
+    /content: *"."/g,
+    (input) => "content: \"\\" + input.codePointAt(input.length-2).toString(16) + "\"" 
+  )
   const outPut = path.join(projectPath, 'build/css/styles.css')
   fixDir(outPut)
   return fs.writeFileSync(outPut, cssBundle)
@@ -64,9 +70,17 @@ function buildIcons() {
   const src = path.join(rootPath, 'src/icons/svg/*.svg')
   const destPath = path.join(projectPath, './build/icons')
   
-  return webfontsGenerator({
+  return new Promise(resolve => webfontsGenerator({
     fontName: 'icons',
     files: globby.sync([src]),
+    cssTemplate: path.join(rootPath, 'src/icons/templates/_icons.hbs.scss'),
+    templateOptions: {
+      cssClass: 'icon',
+      fontPath: '../icons/'
+    },
+    cssDest: path.join(rootPath, 'src/scss/_icons.scss'),
     dest: path.join(projectPath, './build/icons')
-  })
+  }, () => {
+    resolve()
+  }))
 }
