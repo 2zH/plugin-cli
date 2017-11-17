@@ -10,8 +10,6 @@ export default function pluginLerna(rootPath, moduleName) {
     coreCssPath: `${rootPath}/packages/core/src/css`,
     constantPath: `${modulePath}/src/constant.js`,
     docPath: `${modulePath}/README.md`,
-    cssDistPath: `${moduleDistPath}/${moduleName}.css`,
-    jsDistPath: `${moduleDistPath}/${moduleName}.js`,
     testPath: `${modulePath}/test/**/*.js`,
     jsFormattedPath: `${modulePath}/**/*.js`,
     scssFormattedPath: `${modulePath}/**/*.scss`

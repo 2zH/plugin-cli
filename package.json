@@ -67,9 +67,13 @@
 		"stylelint-config-standard": "^17.0.0",
 		"stylelint-order": "^0.7.0",
 		"stylelint-scss": "^2.1.0",
+		"webfontloader": "^1.6.28",
 		"webfonts-generator": "^0.4.0",
 		"webpack": "^3.6.0",
 		"webpack-dev-server": "^2.9.1"
 	},
-	"plugin-cli": {}
+	"plugin-cli": {
+		"rate": true,
+		"root": "/home/taugocauci/Workspaces/plugins-lerna"
+	}
 }

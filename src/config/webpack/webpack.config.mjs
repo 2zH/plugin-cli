@@ -73,7 +73,6 @@ export default function config(name) {
       htmlRule
     ])
   }
-  console.log(path.join(modulePath, 'src/assets'))
   const plugins = [
     new Webpack.HotModuleReplacementPlugin(),
     new ExtractTextPlugin(`plugins/${name}/css/${name}.css`),

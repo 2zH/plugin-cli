@@ -23,8 +23,7 @@ export default async function build(moduleName, options = {}) {
     jsPath,
     scssPath,
     coreCssPath,
-    jsDistPath,
-    cssDistPath
+    moduleDistPath
   } = getPluginsPath(moduleName)
   const {
     jsCachePath,
@@ -36,20 +35,18 @@ export default async function build(moduleName, options = {}) {
   })
   try {
     jsSpinner.start()
-    const { external, ...inputOptionsStandlone } = inputOptions
-    const ruBundle = await rollup.rollup({
-      input: jsPath, 
-      ...(options.standlone ? inputOptionsStandlone : inputOptions)
-    })
-    const { globals, ...outputOptionsStandlone } = outputOptions
-    const { code: jsBundle } = await ruBundle.generate({
-      name: `@plugin/${moduleName}`,
-      format: options.es ? 'es' : 'umd',
-      ...(options.standlone ? outputOptionsStandlone : outputOptions)
-    })
-    fs.writeFileSync(jsCachePath, jsBundle)
-    fs.writeFileSync(jsDistPath, jsBundle)
-    jsSpinner.succeed(chalk`{blue.bold ${moduleName}.js has bundling complate by rollup!}`)
+    const { external, ...standaloneInputOption } = inputOptions
+    const { globals, ...standaloneOutputOption } = outputOptions
+    const inputOps = options.standalone ? standaloneInputOption : inputOptions
+    const outputOps = options.standalone ? standaloneOutputOption : outputOptions
+    const format = options.es ? 'es' : 'umd'
+    const name = `@plugin/${moduleName}`
+    const ext = options.standalone ? '.standalone.js' : '.js'
+    const ruBundle = await rollup.rollup({ input: jsPath, ...inputOps })
+    const { code: jsBundle } = await ruBundle.generate({ name, format, ...outputOps })
+    fs.writeFileSync(`${jsCachePath}/${moduleName}${ext}`, jsBundle)
+    fs.writeFileSync(`${moduleDistPath}/${moduleName}${ext}`, jsBundle)
+    jsSpinner.succeed(chalk`{blue.bold ${moduleName}${ext} has bundling complate by rollup!}`)
   } catch(err) {
     console.log(chalk`{bold \n${err}}`)
     return jsSpinner.fail(chalk`{red.bold We got a error}`)
@@ -68,8 +65,8 @@ export default async function build(moduleName, options = {}) {
       outputStyle: 'nested',
       includePaths: [coreCssPath, `${rootPath}/node_modules`]
     })
-    fs.writeFileSync(cssCachePath, cssBundle)
-    fs.writeFileSync(cssDistPath, cssBundle)
+    fs.writeFileSync(`${cssCachePath}/${moduleName}.css`, cssBundle)
+    fs.writeFileSync(`${moduleDistPath}/${moduleName}.css`, cssBundle)
     cssSpinner.succeed(chalk`{blue.bold ${moduleName}.scss has bundling complate by node-sass!}`)
   } catch(err) {
     console.log(chalk`{bold ${err}}`)

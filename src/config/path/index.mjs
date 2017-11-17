@@ -14,23 +14,28 @@ const outputPluginPrefix = `${outputPrefix}/plugins`
 
 export const getCachePath = (moduleName) => {
   const cachePath = {
-    cssCachePath: `${outputPluginPrefix}/${moduleName}/css/${moduleName}.css`,
-    jsCachePath: `${outputPluginPrefix}/${moduleName}/${moduleName}.js`,
+    cssCachePath: `${outputPluginPrefix}/${moduleName}/css`,
+    jsCachePath: `${outputPluginPrefix}/${moduleName}`,
     mdCachePath: `${outputPluginPrefix}/${moduleName}/${moduleName}.md`,
     docJsCachePath: `${outputPrefix}/docs/${moduleName}.mjs`
   }
-  Object.values(cachePath).forEach(fixDir)
+  Object.values(cachePath)
+    .forEach(fixDir)
   return cachePath
 }
 
 export const getPluginsPath = (moduleName) => {
-  const fixPluginsDir = (config) => {
-    Object.entries(config)
-      .filter(([key, value]) => ['jsDistPath', 'cssDistPath'].includes(key))
-      .map(([key, value]) => value)
-      .forEach(fixDir)
-    return config
+  const configGen = fs.readdirSync(rootPath)
+    .find((str) => str === 'lerna.json')
+      ? pluginsLernaConfig
+      : pluginsConfig
+  const config = configGen(rootPath, moduleName)
+  if (!fs.existsSync(config.modulePath)) {
+    throw new Error('module not Found!')
   }
-  const config = fs.readdirSync(rootPath).find((str) => str === 'lerna.json') ? pluginsLernaConfig : pluginsConfig
-  return fixPluginsDir(config(rootPath, moduleName))
+  Object.entries(config)
+    .filter(([key, value]) => ['jsDistPath', 'cssDistPath'].includes(key))
+    .map(([key, value]) => value)
+    .forEach(fixDir)
+  return config
 }
