@@ -13,6 +13,7 @@ import shelljs from 'shelljs'
 import fs from 'fs'
 import webfontsGenerator from 'webfonts-generator'
 import globby from 'globby'
+import resolveModules from '../commands/resolveModules'
 
 const rootPath = pkgConfig.root
 export default function buildDependencies() {
@@ -48,11 +49,7 @@ function buildScss() {
   const cssBundle = sass.renderSync({
     file: path.join(rootPath, 'src/scss/styles.scss'),
     outputStyle: 'nested',
-    includePaths: [
-      `${rootPath}/node_modules`,
-      `${projectPath}/node_modules`
-      // coreCssPath
-    ]
+    includePaths: resolveModules
   })
   .css
   .toString()

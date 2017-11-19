@@ -63,7 +63,7 @@ export default async function build(moduleName, options = {}) {
     const { css: cssBundle } = sass.renderSync({
       file: scssPath,
       outputStyle: 'nested',
-      includePaths: [coreCssPath, `${rootPath}/node_modules`]
+      includePaths: resolveModules.concat(coreCssPath)
     })
     fs.writeFileSync(`${cssCachePath}/${moduleName}.css`, cssBundle)
     fs.writeFileSync(`${moduleDistPath}/${moduleName}.css`, cssBundle)

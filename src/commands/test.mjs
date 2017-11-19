@@ -14,9 +14,8 @@ import fs from 'fs'
 import path from 'path'
 import puppeteer from 'puppeteer'
 import webpackRule from '../config/webpack/webpack.rules'
+import resolveModules from '../config/common/resolveModules'
 
-const rootPath = pkgConfig.root
-const nodePath = path.join(projectPath, 'node_modules')
 export default async function test(name, options) {
   if (options.buildTest) {
     await buildTest(name)
@@ -36,10 +35,10 @@ export default async function test(name, options) {
         rules: webpackRule
       },
       resolve: {
-        modules: [nodePath, 'node_modules']
+        modules: resolveModules
       },
       resolveLoader: {
-        modules: [nodePath, 'node_modules']
+        modules: resolveModules
       }
     }
   }

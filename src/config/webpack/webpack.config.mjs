@@ -13,6 +13,7 @@ import externals from '../common/externals'
 import HtmlWebpackPlugin from 'html-webpack-plugin'
 import ExtractTextPlugin from 'extract-text-webpack-plugin'
 import CopyWebpackPlugin from 'copy-webpack-plugin'
+import resolveModules from '../config/common/resolveModules'
 
 const rootPath = pkgConfig.root
 export default function config(name) {
@@ -43,7 +44,7 @@ export default function config(name) {
           loader: 'sass-loader',
           options: {
             outputStyle: 'nested',
-            includePaths: [coreCssPath, `${rootPath}/node_modules`]
+            includePaths: resolveModules.concat(coreCssPath)
           }
         }]
       })
@@ -92,10 +93,10 @@ export default function config(name) {
     module,
     context: projectPath,
     resolve: {
-      modules: ['node_modules', path.join(rootPath, 'node_modules')]
+      modules: resolveModules
     },
     resolveLoader: {
-      modules: ['node_modules', 'packages'],
+      modules: resolveModules.concat('packages'),
       alias: {
         'assemble-loader': path.join(projectPath, 'packages/assemble-loader')
       }
