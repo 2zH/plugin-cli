@@ -2,14 +2,18 @@ import {
   projectPath,
   pkgConfig
 } from '../../../lib'
+import path from 'path'
+import fs from 'fs'
+import childProcess from 'child_process'
 
 const rootPath = pkgConfig.root
-const rootNodeModulesPath = path.resolve(rootPath, 'node_modules')
-const projectNodeModulesPath = path.resolve(projectPath, 'node_modules')
-const isYarn = !Boolean(fs.readdirSync(projectNodeModulesPath).length)
-export const resolveModules = [
-  rootNodeModulesPath,
-  isYarn
-    ? path.resolve(projectNodeModulesPath, '../')
-    : projectNodeModulesPath
-]
+const yarnNodeModulesPath = childProcess.execSync('yarn global dir')
+  .toString()
+  .replace(/\n/g, '')
+const isYarn = /yarn/g.test(projectPath)
+const resolveModules = [
+  rootPath,
+  isYarn ? yarnNodeModulesPath : projectPath
+].map(p => path.resolve(p, 'node_modules'))
+
+export default resolveModules

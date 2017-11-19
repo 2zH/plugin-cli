@@ -13,12 +13,16 @@ import shelljs from 'shelljs'
 import fs from 'fs'
 import webfontsGenerator from 'webfonts-generator'
 import globby from 'globby'
-import resolveModules from '../commands/resolveModules'
+import resolveModules from '../config/common/resolveModules'
 
 const rootPath = pkgConfig.root
 export default function buildDependencies() {
   return buildIcons()
-    .then(() => Promise.all([buildScripts(), buildScss(), buildAssets()]))
+    .then(() => Promise.all([
+      buildScripts(),
+      buildScss(),
+      buildAssets()
+    ]))
 }
 
 function buildAssets() {

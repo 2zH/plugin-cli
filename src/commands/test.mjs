@@ -16,6 +16,7 @@ import puppeteer from 'puppeteer'
 import webpackRule from '../config/webpack/webpack.rules'
 import resolveModules from '../config/common/resolveModules'
 
+const rootPath = pkgConfig.root
 export default async function test(name, options) {
   if (options.buildTest) {
     await buildTest(name)

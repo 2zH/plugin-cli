@@ -13,7 +13,7 @@ import externals from '../common/externals'
 import HtmlWebpackPlugin from 'html-webpack-plugin'
 import ExtractTextPlugin from 'extract-text-webpack-plugin'
 import CopyWebpackPlugin from 'copy-webpack-plugin'
-import resolveModules from '../config/common/resolveModules'
+import resolveModules from '../common/resolveModules'
 
 const rootPath = pkgConfig.root
 export default function config(name) {
