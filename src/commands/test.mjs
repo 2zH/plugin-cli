@@ -59,7 +59,7 @@ async function buildTest(name) {
     events: Boolean(events),
   }
   const input = path.join(projectPath, 'src/templates/test/plugin.spec.js')
-  const outPut = path.join(modulePath, `test/unit/${name}.spec.js`)
+  const outPut = fixDir(path.join(modulePath, `test/unit/${name}.spec.js`))
   if (fs.existsSync(outPut)) {
     fs.copyFileSync(outPut, fixDir(path.join(modulePath, `.plugin-cache/${name}.spec.bak.js`)))
   }

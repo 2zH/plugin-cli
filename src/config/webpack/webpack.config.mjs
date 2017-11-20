@@ -80,11 +80,7 @@ export default function config(name) {
     new HtmlWebpackPlugin({
       template: hbsPath,
       inject: false
-    }),
-    new CopyWebpackPlugin([{
-      from: path.join(modulePath, 'src/assets'),
-      to: `plugins/${name}/assets`
-    }])
+    })
   ]
   const webpackConfig = {
     entry,
@@ -101,7 +97,14 @@ export default function config(name) {
         'assemble-loader': path.join(projectPath, 'packages/assemble-loader')
       }
     },
-    plugins
+    plugins: fs.existsSync(path.join(modulePath, 'src/assets'))
+      ? plugins.concat(
+        new CopyWebpackPlugin([{
+          from: path.join(modulePath, 'src/assets'),
+          to: `plugins/${name}/assets`
+        }])
+      )
+      : plugins
   }
 
   const devOps = {

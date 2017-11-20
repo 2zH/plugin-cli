@@ -16,6 +16,7 @@ import {
   getPluginsPath
 } from '../config/path'
 import resolveModules from '../config/common/resolveModules'
+import childProcess from 'child_process'
 
 const rootPath = pkgConfig.root
 export default async function build(moduleName, options = {}) {
@@ -56,7 +57,7 @@ export default async function build(moduleName, options = {}) {
     return;
   }
 
-  fs.mkdirSync(cssCachePath)
+  childProcess.execSync(`mkdir -p ${cssCachePath}`)
   const cssSpinner = new Ora({
     text: chalk`{yellow Bundling scss...}`
   })
